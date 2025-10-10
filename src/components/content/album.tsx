@@ -2,6 +2,8 @@
  * SlinkyPixels : Content : Album
  */
 import Image, { ImageProps } from '@/components/image'
+import { cn } from '@/lib/utils'
+import { type Album } from '@/sanity/types'
 import {
     Dialog,
     DialogContent,
@@ -9,9 +11,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger
-} from '@/components/ui/dialog'
-import { cn } from '@/lib/utils'
-import { type Album } from '@/sanity/types'
+} from '@ui/dialog'
 
 const Album = ({
     id,

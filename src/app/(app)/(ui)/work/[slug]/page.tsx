@@ -5,7 +5,11 @@ import Composer from '@/components/composer'
 import { ExternalLinkIcon, FrontPageIcon } from '@/components/icons'
 import Link from '@/components/link'
 import { Typography, typographyVariants } from '@/components/typography'
-import { Badge } from '@/components/ui/badge'
+import { prettifyUrl } from '@/lib/helpers'
+import { cn } from '@/lib/utils'
+import { sanityFetch } from '@/sanity/lib/live'
+import { WORK_PATHS_QUERY, WORK_QUERY } from '@/sanity/lib/queries'
+import { Badge } from '@ui/badge'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -13,12 +17,8 @@ import {
     BreadcrumbList,
     BreadcrumbPage,
     BreadcrumbSeparator
-} from '@/components/ui/breadcrumb'
-import { Separator } from '@/components/ui/separator'
-import { prettifyUrl } from '@/lib/helpers'
-import { cn } from '@/lib/utils'
-import { sanityFetch } from '@/sanity/lib/live'
-import { WORK_PATHS_QUERY, WORK_QUERY } from '@/sanity/lib/queries'
+} from '@ui/breadcrumb'
+import { Separator } from '@ui/separator'
 import { notFound } from 'next/navigation'
 
 export const generateStaticParams = async () => {

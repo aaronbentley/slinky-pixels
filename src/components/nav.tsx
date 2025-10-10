@@ -1,16 +1,15 @@
 'use client'
-
+import { resolveLinkURL } from '@/lib/helpers'
+import { cn } from '@/lib/utils'
+import { MENU_QUERYResult } from '@/sanity/types'
+import { Button } from '@ui/button'
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuTrigger
-} from '@/components/dropdown-menu'
-import { Button } from '@/components/ui/button'
-import { resolveLinkURL } from '@/lib/helpers'
-import { cn } from '@/lib/utils'
-import { MENU_QUERYResult } from '@/sanity/types'
+} from '@ui/dropdown-menu'
 import { Menu } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'

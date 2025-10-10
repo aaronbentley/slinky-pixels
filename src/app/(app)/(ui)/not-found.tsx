@@ -2,8 +2,8 @@
  * SlinkyPixels : Not Found : 404
  */
 import { headingBaseClasses, Typography } from '@/components/typography'
-import { Button, buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { Button, buttonVariants } from '@ui/button'
 import { Metadata } from 'next'
 import Link from 'next/link'
 

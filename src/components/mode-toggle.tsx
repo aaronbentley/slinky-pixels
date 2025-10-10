@@ -1,5 +1,4 @@
 'use client'
-import { DropdownMenuLabel } from '@/components/dropdown-menu'
 import { cn } from '@/lib/utils'
 /**
  * SlinkyPixels : Mode Toggle
@@ -9,6 +8,7 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuLabel,
     DropdownMenuTrigger
 } from '@ui/dropdown-menu'
 import { Moon, Sun } from 'lucide-react'

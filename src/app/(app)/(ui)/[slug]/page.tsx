@@ -6,6 +6,8 @@ import { FrontPageIcon } from '@/components/icons'
 import Image from '@/components/image'
 import Link from '@/components/link'
 import { Typography } from '@/components/typography'
+import { sanityFetch } from '@/sanity/lib/live'
+import { PAGE_PATHS_QUERY, PAGE_QUERY } from '@/sanity/lib/queries'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -13,10 +15,8 @@ import {
     BreadcrumbList,
     BreadcrumbPage,
     BreadcrumbSeparator
-} from '@/components/ui/breadcrumb'
-import { Separator } from '@/components/ui/separator'
-import { sanityFetch } from '@/sanity/lib/live'
-import { PAGE_PATHS_QUERY, PAGE_QUERY } from '@/sanity/lib/queries'
+} from '@ui/breadcrumb'
+import { Separator } from '@ui/separator'
 import { notFound } from 'next/navigation'
 
 export const generateStaticParams = async () => {
