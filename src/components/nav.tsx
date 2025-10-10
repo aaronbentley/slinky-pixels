@@ -40,7 +40,7 @@ const Nav = ({ menu }: { menu: MENU_QUERYResult }) => {
                 side='top'
                 align='start'>
                 <DropdownMenuLabel className='text-muted-foreground'>
-                    {process.env.NEXT_PUBLIC_APP_TITLE}
+                    Menu
                 </DropdownMenuLabel>
                 {menu &&
                     menu.links &&

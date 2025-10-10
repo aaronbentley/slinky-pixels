@@ -1,4 +1,6 @@
 'use client'
+import { DropdownMenuLabel } from '@/components/dropdown-menu'
+import { cn } from '@/lib/utils'
 /**
  * SlinkyPixels : Mode Toggle
  */
@@ -13,7 +15,19 @@ import { Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
 
 const ModeToggle = () => {
-    const { setTheme } = useTheme()
+    /**
+     * Theme hook from next-themes
+     */
+    const { theme, setTheme } = useTheme()
+
+    /**
+     * Create theme map
+     */
+    const themeMap = {
+        light: 'Light',
+        dark: 'Dark',
+        system: 'System'
+    }
 
     return (
         <DropdownMenu>
@@ -28,21 +42,29 @@ const ModeToggle = () => {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end'>
-                <DropdownMenuItem
-                    onClick={() => setTheme('light')}
-                    className='justify-between'>
-                    Light
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                    onClick={() => setTheme('dark')}
-                    className='justify-between'>
-                    Dark
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                    onClick={() => setTheme('system')}
-                    className='justify-between'>
-                    System
-                </DropdownMenuItem>
+                <DropdownMenuLabel className='text-muted-foreground'>
+                    Theme
+                </DropdownMenuLabel>
+                {Object.entries(themeMap).map(([key, value]) => {
+                    // Check if the menu is active
+                    const active = theme === key
+                    return (
+                        <DropdownMenuItem
+                            key={key}
+                            onClick={() => setTheme(key)}
+                            className={cn(
+                                'font-medium',
+                                active && [
+                                    'text-background',
+                                    'bg-secondary',
+                                    'focus:text-background',
+                                    'focus:bg-secondary/90'
+                                ]
+                            )}>
+                            {value}
+                        </DropdownMenuItem>
+                    )
+                })}
             </DropdownMenuContent>
         </DropdownMenu>
     )
