@@ -1,10 +1,10 @@
 'use client'
-import Link from '@/components/link'
-import { headingBaseClasses } from '@/components/typography'
 /**
  * SlinkyPixels : Mobile Nav
  *
  */
+import Link from '@/components/link'
+import { headingBaseClasses } from '@/components/typography'
 import { resolveLinkURL } from '@/lib/helpers'
 import { cn } from '@/lib/utils'
 import { MENU_QUERYResult } from '@/sanity/types'
@@ -38,7 +38,7 @@ const MobileNav = ({ menu }: { menu: MENU_QUERYResult }) => {
                 <Button
                     size='icon'
                     variant='ghost'>
-                    <Menu className='h-[1.2rem] w-[1.2rem]' />
+                    <Menu className='size-[1.2rem]' />
                     <span className='sr-only'>Toggle Menu</span>
                 </Button>
             </SheetTrigger>

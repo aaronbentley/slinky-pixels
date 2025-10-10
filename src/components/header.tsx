@@ -1,8 +1,8 @@
 /**
  * SlinkyPixels : Header
  */
-import MobileNav from '@/components/mobile-nav'
 import ModeToggle from '@/components/mode-toggle'
+import Nav from '@/components/nav'
 import { headingBaseClasses } from '@/components/typography'
 import { cn } from '@/lib/utils'
 import { sanityFetch } from '@/sanity/lib/live'
@@ -22,7 +22,8 @@ const Header = async () => {
         <header className='sticky top-0 z-50 w-full border-b border-muted bg-background'>
             <div className='container flex items-center'>
                 <div className='flex w-full justify-between py-4'>
-                    <MobileNav menu={menu} />
+                    <Nav menu={menu} />
+                    {/* <MobileNav menu={menu} /> */}
                     <Link
                         href='/'
                         className={cn([
