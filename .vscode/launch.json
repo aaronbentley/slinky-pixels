@@ -5,26 +5,42 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Next.js Turbo [server-side]",
-            "type": "node-terminal",
+            "name": "Next.js [server-side]",
+            "type": "node",
             "request": "launch",
-            "command": "yarn dev:turbo"
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "yarn",
+            "runtimeArgs": ["dev"],
+            "console": "integratedTerminal",
+            "skipFiles": ["<node_internals>/**"],
+            "presentation": {
+                "group": "_config",
+                "order": 1
+            }
         },
         {
             "name": "Next.js [client-side]",
             "type": "chrome",
             "request": "launch",
-            "url": "https://localhost:3000"
+            "url": "https://localhost:3000",
+            "presentation": {
+                "group": "_config",
+                "order": 1
+            }
         }
     ],
     "compounds": [
         {
             "name": "Next.js [full stack]",
             "configurations": [
-                "Next.js Turbo [server-side]",
+                "Next.js [server-side]",
                 "Next.js [client-side]"
             ],
-            "stopAll": true
+            "stopAll": true,
+            "presentation": {
+                "group": "compound",
+                "order": 2
+            }
         }
     ]
 }
