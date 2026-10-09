@@ -152,7 +152,7 @@ const Work = async ({ params }: PageProps<'/work/[slug]'>) => {
                             </div>
                         )}
                         {work.uses && (
-                            <div className='flex flex-wrap justify-center gap-2 pt-2 md:max-w-md md:flex-nowrap md:justify-start'>
+                            <div className='flex flex-wrap justify-center gap-2 pt-2 md:max-w-md md:justify-start'>
                                 {work.uses.map((use) => (
                                     <Badge
                                         key={use}
