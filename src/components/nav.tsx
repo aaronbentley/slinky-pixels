@@ -1,13 +1,15 @@
 'use client'
 import { resolveLinkURL } from '@/lib/helpers'
 import { cn } from '@/lib/utils'
-import { MENU_QUERYResult } from '@/sanity/types'
+import { MENU_QUERY_RESULT } from '@/sanity/types'
+import { StegaBranded } from 'next-sanity'
 import { Button } from '@ui/button'
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuItem,
+    DropdownMenuGroup,
     DropdownMenuLabel,
+    DropdownMenuLinkItem,
     DropdownMenuTrigger
 } from '@ui/dropdown-menu'
 import { Menu } from 'lucide-react'
@@ -19,7 +21,11 @@ import { usePathname } from 'next/navigation'
  *
  */
 
-const Nav = ({ menu }: { menu: MENU_QUERYResult }) => {
+const Nav = ({
+    menu
+}: {
+    menu: MENU_QUERY_RESULT | StegaBranded<MENU_QUERY_RESULT>
+}) => {
     /**
      * Get the pathname
      */
@@ -27,71 +33,75 @@ const Nav = ({ menu }: { menu: MENU_QUERYResult }) => {
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button
-                    size='icon'
-                    variant='ghost'>
-                    <Menu className='size-[1.2rem]' />
-                    <span className='sr-only'>Toggle Menu</span>
-                </Button>
+            <DropdownMenuTrigger
+                render={
+                    <Button
+                        size='icon'
+                        variant='ghost'
+                    />
+                }>
+                <Menu className='size-[1.2rem]' />
+                <span className='sr-only'>Toggle Menu</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent
-                side='top'
-                align='start'>
-                <DropdownMenuLabel className='text-muted-foreground'>
-                    Menu
-                </DropdownMenuLabel>
-                {menu &&
-                    menu.links &&
-                    menu?.links.map((link) => {
-                        /**
-                         * Destructure link properties
-                         */
-                        const {
-                            _key,
-                            blank,
-                            customUrl,
-                            destinationRef,
-                            destinationHref,
-                            label
-                        } = link
+                align='start'
+                className='w-auto'>
+                <DropdownMenuGroup>
+                    <DropdownMenuLabel>Menu</DropdownMenuLabel>
+                    {menu &&
+                        menu.links &&
+                        menu?.links.map((link) => {
+                            /**
+                             * Destructure link properties
+                             */
+                            const {
+                                _key,
+                                blank,
+                                customUrl,
+                                destinationRef,
+                                destinationHref,
+                                label
+                            } = link
 
-                        /**
-                         * Verify link properties
-                         */
-                        if (
-                            !label ||
-                            !destinationRef ||
-                            (customUrl && !destinationHref)
-                        )
-                            return null
+                            /**
+                             * Verify link properties
+                             */
+                            if (
+                                !label ||
+                                !destinationRef ||
+                                (customUrl && !destinationHref)
+                            )
+                                return null
 
-                        /**
-                         * Resolve menu item URL
-                         */
-                        const href = resolveLinkURL({
-                            customUrl: customUrl ?? undefined,
-                            destinationRef: destinationRef ?? undefined,
-                            destinationHref: destinationHref ?? undefined
-                        })
+                            /**
+                             * Resolve menu item URL
+                             */
+                            const href = resolveLinkURL({
+                                customUrl: customUrl ?? undefined,
+                                destinationRef: destinationRef ?? undefined,
+                                destinationHref: destinationHref ?? undefined
+                            })
 
-                        // Check if the menu is active
-                        const active = pathname === href
+                            // Check if the menu is active
+                            const active = pathname === href
 
-                        return (
-                            <DropdownMenuItem
-                                key={_key}
-                                asChild>
-                                <Link
-                                    href={href}
-                                    target={blank ? '_blank' : '_self'}
-                                    rel={
-                                        blank
-                                            ? 'noopener noreferrer'
-                                            : undefined
+                            return (
+                                <DropdownMenuLinkItem
+                                    key={_key}
+                                    closeOnClick
+                                    render={
+                                        <Link
+                                            href={href}
+                                            target={blank ? '_blank' : '_self'}
+                                            rel={
+                                                blank
+                                                    ? 'noopener noreferrer'
+                                                    : undefined
+                                            }
+                                        />
                                     }
+                                    aria-current={active ? 'page' : undefined}
                                     className={cn(
-                                        'cursor-pointer',
                                         'font-medium',
                                         active && [
                                             'text-background',
@@ -101,10 +111,10 @@ const Nav = ({ menu }: { menu: MENU_QUERYResult }) => {
                                         ]
                                     )}>
                                     {label}
-                                </Link>
-                            </DropdownMenuItem>
-                        )
-                    })}
+                                </DropdownMenuLinkItem>
+                            )
+                        })}
+                </DropdownMenuGroup>
             </DropdownMenuContent>
         </DropdownMenu>
     )

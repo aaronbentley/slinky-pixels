@@ -12,7 +12,16 @@
  * ---------------------------------------------------------------------------------
  */
 
-// Source: schema.json
+export declare const internalGroqTypeReferenceTo: unique symbol
+
+// Source: src/sanity/extract.json
+export type SanityImageAssetReference = {
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+}
+
 export type Work = {
     _id: string
     _type: 'work'
@@ -24,33 +33,58 @@ export type Work = {
     slug?: Slug
     url: string
     uses: Array<string>
-    content: Array<
-        | ({
-              _key: string
-          } & Frontpage)
-        | ({
-              _key: string
-          } & Body)
-        | ({
-              _key: string
-          } & CollectionGrid)
-        | ({
-              _key: string
-          } & Album)
-    >
+    content: Content
     image: {
-        asset?: {
-            _ref: string
-            _type: 'reference'
-            _weak?: boolean
-            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
-        }
+        asset?: SanityImageAssetReference
         media?: unknown
         hotspot?: SanityImageHotspot
         crop?: SanityImageCrop
         _type: 'image'
     }
     seo?: Seo
+}
+
+export type Seo = {
+    _type: 'seo'
+    seoTitle: string
+    seoDescription: string
+}
+
+export type SanityImageCrop = {
+    _type: 'sanity.imageCrop'
+    top: number
+    bottom: number
+    left: number
+    right: number
+}
+
+export type SanityImageHotspot = {
+    _type: 'sanity.imageHotspot'
+    x: number
+    y: number
+    height: number
+    width: number
+}
+
+export type Content = Array<
+    | ({
+          _key: string
+      } & Frontpage)
+    | ({
+          _key: string
+      } & Body)
+    | ({
+          _key: string
+      } & CollectionGrid)
+    | ({
+          _key: string
+      } & Album)
+>
+
+export type Slug = {
+    _type: 'slug'
+    current: string
+    source?: string
 }
 
 export type Settings = {
@@ -73,6 +107,7 @@ export type Settings = {
             | 'Youtube'
             | 'LinkedIn'
             | 'Apple Music'
+            | 'Xbox'
         url: string
         _type: 'socialLink'
         _key: string
@@ -93,23 +128,25 @@ export type Menu = {
     >
 }
 
+export type PageReference = {
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    [internalGroqTypeReferenceTo]?: 'page'
+}
+
+export type PostReference = {
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    [internalGroqTypeReferenceTo]?: 'post'
+}
+
 export type Link = {
     _type: 'link'
     label: string
     customUrl?: boolean
-    destinationRef?:
-        | {
-              _ref: string
-              _type: 'reference'
-              _weak?: boolean
-              [internalGroqTypeReferenceTo]?: 'page'
-          }
-        | {
-              _ref: string
-              _type: 'reference'
-              _weak?: boolean
-              [internalGroqTypeReferenceTo]?: 'post'
-          }
+    destinationRef?: PageReference | PostReference
     destinationHref?: string
     blank?: boolean
 }
@@ -125,20 +162,12 @@ export type Frontpage = {
     >
 }
 
-export type Content = Array<
-    | ({
-          _key: string
-      } & Frontpage)
-    | ({
-          _key: string
-      } & Body)
-    | ({
-          _key: string
-      } & CollectionGrid)
-    | ({
-          _key: string
-      } & Album)
->
+export type WorkReference = {
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    [internalGroqTypeReferenceTo]?: 'work'
+}
 
 export type CollectionGrid = {
     _type: 'collectionGrid'
@@ -146,27 +175,15 @@ export type CollectionGrid = {
     contentType: 'post' | 'page' | 'work' | 'custom'
     limit?: number
     customContent?: Array<
-        | {
-              _ref: string
-              _type: 'reference'
-              _weak?: boolean
+        | ({
               _key: string
-              [internalGroqTypeReferenceTo]?: 'page'
-          }
-        | {
-              _ref: string
-              _type: 'reference'
-              _weak?: boolean
+          } & PageReference)
+        | ({
               _key: string
-              [internalGroqTypeReferenceTo]?: 'post'
-          }
-        | {
-              _ref: string
-              _type: 'reference'
-              _weak?: boolean
+          } & PostReference)
+        | ({
               _key: string
-              [internalGroqTypeReferenceTo]?: 'work'
-          }
+          } & WorkReference)
     >
 }
 
@@ -192,19 +209,7 @@ export type BodyPortableText = Array<{
     listItem?: 'bullet' | 'number'
     markDefs?: Array<{
         customUrl?: boolean
-        destinationRef?:
-            | {
-                  _ref: string
-                  _type: 'reference'
-                  _weak?: boolean
-                  [internalGroqTypeReferenceTo]?: 'post'
-              }
-            | {
-                  _ref: string
-                  _type: 'reference'
-                  _weak?: boolean
-                  [internalGroqTypeReferenceTo]?: 'page'
-              }
+        destinationRef?: PostReference | PageReference
         destinationHref?: string
         blank?: boolean
         _type: 'link'
@@ -232,19 +237,7 @@ export type BasicPortableText = Array<{
     listItem?: never
     markDefs?: Array<{
         customUrl?: boolean
-        linkDestinationRef?:
-            | {
-                  _ref: string
-                  _type: 'reference'
-                  _weak?: boolean
-                  [internalGroqTypeReferenceTo]?: 'post'
-              }
-            | {
-                  _ref: string
-                  _type: 'reference'
-                  _weak?: boolean
-                  [internalGroqTypeReferenceTo]?: 'page'
-              }
+        linkDestinationRef?: PostReference | PageReference
         linkDestinationHref?: string
         blank?: boolean
         _type: 'link'
@@ -254,6 +247,13 @@ export type BasicPortableText = Array<{
     _type: 'block'
     _key: string
 }>
+
+export type CategoryReference = {
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    [internalGroqTypeReferenceTo]?: 'category'
+}
 
 export type Post = {
     _id: string
@@ -266,24 +266,17 @@ export type Post = {
     slug: Slug
     content: Content
     image: {
-        asset?: {
-            _ref: string
-            _type: 'reference'
-            _weak?: boolean
-            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
-        }
+        asset?: SanityImageAssetReference
         media?: unknown
         hotspot?: SanityImageHotspot
         crop?: SanityImageCrop
         _type: 'image'
     }
-    categories?: Array<{
-        _ref: string
-        _type: 'reference'
-        _weak?: boolean
-        _key: string
-        [internalGroqTypeReferenceTo]?: 'category'
-    }>
+    categories?: Array<
+        {
+            _key: string
+        } & CategoryReference
+    >
     seo: Seo
     publishDate: string
 }
@@ -299,12 +292,7 @@ export type Page = {
     slug: Slug
     content: Content
     image: {
-        asset?: {
-            _ref: string
-            _type: 'reference'
-            _weak?: boolean
-            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
-        }
+        asset?: SanityImageAssetReference
         media?: unknown
         hotspot?: SanityImageHotspot
         crop?: SanityImageCrop
@@ -313,22 +301,11 @@ export type Page = {
     seo?: Seo
 }
 
-export type Seo = {
-    _type: 'seo'
-    seoTitle: string
-    seoDescription: string
-}
-
 export type Album = {
     _type: 'album'
     title: string
     images: Array<{
-        asset?: {
-            _ref: string
-            _type: 'reference'
-            _weak?: boolean
-            [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
-        }
+        asset?: SanityImageAssetReference
         media?: unknown
         hotspot?: SanityImageHotspot
         crop?: SanityImageCrop
@@ -364,20 +341,16 @@ export type SanityImageDimensions = {
     aspectRatio: number
 }
 
-export type SanityImageHotspot = {
-    _type: 'sanity.imageHotspot'
-    x: number
-    y: number
-    height: number
-    width: number
-}
-
-export type SanityImageCrop = {
-    _type: 'sanity.imageCrop'
-    top: number
-    bottom: number
-    left: number
-    right: number
+export type SanityImageMetadata = {
+    _type: 'sanity.imageMetadata'
+    location?: Geopoint
+    dimensions?: SanityImageDimensions
+    palette?: SanityImagePalette
+    lqip?: string
+    blurHash?: string
+    thumbHash?: string
+    hasAlpha?: boolean
+    isOpaque?: boolean
 }
 
 export type SanityFileAsset = {
@@ -391,15 +364,22 @@ export type SanityFileAsset = {
     title?: string
     description?: string
     altText?: string
-    sha1hash?: string
-    extension?: string
-    mimeType?: string
-    size?: number
-    assetId?: string
+    sha1hash: string
+    extension: string
+    mimeType: string
+    size: number
+    assetId: string
     uploadId?: string
-    path?: string
-    url?: string
+    path: string
+    url: string
     source?: SanityAssetSourceData
+}
+
+export type SanityAssetSourceData = {
+    _type: 'sanity.assetSourceData'
+    name?: string
+    id?: string
+    url?: string
 }
 
 export type SanityImageAsset = {
@@ -413,27 +393,16 @@ export type SanityImageAsset = {
     title?: string
     description?: string
     altText?: string
-    sha1hash?: string
-    extension?: string
-    mimeType?: string
-    size?: number
-    assetId?: string
+    sha1hash: string
+    extension: string
+    mimeType: string
+    size: number
+    assetId: string
     uploadId?: string
-    path?: string
-    url?: string
+    path: string
+    url: string
     metadata?: SanityImageMetadata
     source?: SanityAssetSourceData
-}
-
-export type SanityImageMetadata = {
-    _type: 'sanity.imageMetadata'
-    location?: Geopoint
-    dimensions?: SanityImageDimensions
-    palette?: SanityImagePalette
-    lqip?: string
-    blurHash?: string
-    hasAlpha?: boolean
-    isOpaque?: boolean
 }
 
 export type Geopoint = {
@@ -443,58 +412,52 @@ export type Geopoint = {
     alt?: number
 }
 
-export type Slug = {
-    _type: 'slug'
-    current: string
-    source?: string
-}
-
-export type SanityAssetSourceData = {
-    _type: 'sanity.assetSourceData'
-    name?: string
-    id?: string
-    url?: string
-}
-
 export type AllSanitySchemaTypes =
+    | SanityImageAssetReference
     | Work
+    | Seo
+    | SanityImageCrop
+    | SanityImageHotspot
+    | Content
+    | Slug
     | Settings
     | Menu
+    | PageReference
+    | PostReference
     | Link
     | Frontpage
-    | Content
+    | WorkReference
     | CollectionGrid
     | Category
     | BodyPortableText
     | Body
     | BasicPortableText
+    | CategoryReference
     | Post
     | Page
-    | Seo
     | Album
     | SanityImagePaletteSwatch
     | SanityImagePalette
     | SanityImageDimensions
-    | SanityImageHotspot
-    | SanityImageCrop
-    | SanityFileAsset
-    | SanityImageAsset
     | SanityImageMetadata
-    | Geopoint
-    | Slug
+    | SanityFileAsset
     | SanityAssetSourceData
-export declare const internalGroqTypeReferenceTo: unique symbol
-// Source: ./src/sanity/lib/queries.ts
+    | SanityImageAsset
+    | Geopoint
+
+// Source: src/sanity/lib/queries.ts
 // Variable: PAGE_PATHS_QUERY
 // Query: *[        _type == 'page' &&        defined(slug.current) &&        slug.current != '/'    ] {            slug {        current    }    }
-export type PAGE_PATHS_QUERYResult = Array<{
+export type PAGE_PATHS_QUERY_RESULT = Array<{
     slug: {
         current: string
     }
 }>
+
+// Source: src/sanity/lib/queries.ts
 // Variable: PAGE_QUERY
 // Query: *[        _type == 'page' &&         defined(slug.current) &&        slug.current == $slug    ][0] {        _id,        _type,        title,        subtitle,            content[] {        ...,        _key,        _type,        'title': coalesce(title, 'Content Title'),            _type == 'frontpage' => {        title,        content,        buttons[] {            _key,            label,            customUrl,            destinationHref,            destinationRef-> {                _type,                title,                    slug {        current    }            },            blank        }    },            _type == 'body' => {        content[] {            ...,            markDefs[] {                ...,                (_type == 'link' && customUrl != true) => {                      destinationRef-> {                        _type,                        title,                            slug {        current    }                    }                }            },        }    },            _type == 'collectionGrid' => {        contentType,        limit,        "content": select(            defined(customContent) && contentType == 'custom' => customContent[]-> {                _id,                _type,                title,                subtitle,                excerpt,                    slug {        current    },                    image {        ...,        asset-> {            ...,            metadata        }    }            },            defined(contentType) && contentType != 'custom'  => *[_type == ^.contentType] {                _id,                _type,                title,                subtitle,                excerpt,                    slug {        current    },                    image {        ...,        asset-> {            ...,            metadata        }    }            }|order(title asc),            []        )    },            _type == 'album' => {        title,        images[] {            ...,            _type,            asset->,            crop,            hotspot        }    }    },            image {        ...,        asset-> {            ...,            metadata        }    }    }
-export type PAGE_QUERYResult = {
+export type PAGE_QUERY_RESULT = {
     _id: string
     _type: 'page'
     title: string
@@ -516,14 +479,14 @@ export type PAGE_QUERYResult = {
                       title?: string
                       description?: string
                       altText?: string
-                      sha1hash?: string
-                      extension?: string
-                      mimeType?: string
-                      size?: number
-                      assetId?: string
+                      sha1hash: string
+                      extension: string
+                      mimeType: string
+                      size: number
+                      assetId: string
                       uploadId?: string
-                      path?: string
-                      url?: string
+                      path: string
+                      url: string
                       metadata?: SanityImageMetadata
                       source?: SanityAssetSourceData
                   } | null
@@ -547,30 +510,12 @@ export type PAGE_QUERYResult = {
                       _key: string
                   }>
                   style?:
-                      | 'blockquote'
-                      | 'h2'
-                      | 'h3'
-                      | 'h4'
-                      | 'h5'
-                      | 'h6'
-                      | 'normal'
+                      'blockquote' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
                   listItem?: 'bullet' | 'number'
                   markDefs: Array<
                       | {
                             customUrl?: boolean
-                            destinationRef?:
-                                | {
-                                      _ref: string
-                                      _type: 'reference'
-                                      _weak?: boolean
-                                      [internalGroqTypeReferenceTo]?: 'page'
-                                  }
-                                | {
-                                      _ref: string
-                                      _type: 'reference'
-                                      _weak?: boolean
-                                      [internalGroqTypeReferenceTo]?: 'post'
-                                  }
+                            destinationRef?: PageReference | PostReference
                             destinationHref?: string
                             blank?: boolean
                             _type: 'link'
@@ -612,27 +557,15 @@ export type PAGE_QUERYResult = {
               contentType: 'custom' | 'page' | 'post' | 'work'
               limit: number | null
               customContent?: Array<
-                  | {
-                        _ref: string
-                        _type: 'reference'
-                        _weak?: boolean
+                  | ({
                         _key: string
-                        [internalGroqTypeReferenceTo]?: 'page'
-                    }
-                  | {
-                        _ref: string
-                        _type: 'reference'
-                        _weak?: boolean
+                    } & PageReference)
+                  | ({
                         _key: string
-                        [internalGroqTypeReferenceTo]?: 'post'
-                    }
-                  | {
-                        _ref: string
-                        _type: 'reference'
-                        _weak?: boolean
+                    } & PostReference)
+                  | ({
                         _key: string
-                        [internalGroqTypeReferenceTo]?: 'work'
-                    }
+                    } & WorkReference)
               >
               content:
                   | Array<never>
@@ -658,14 +591,14 @@ export type PAGE_QUERYResult = {
                                       title?: string
                                       description?: string
                                       altText?: string
-                                      sha1hash?: string
-                                      extension?: string
-                                      mimeType?: string
-                                      size?: number
-                                      assetId?: string
+                                      sha1hash: string
+                                      extension: string
+                                      mimeType: string
+                                      size: number
+                                      assetId: string
                                       uploadId?: string
-                                      path?: string
-                                      url?: string
+                                      path: string
+                                      url: string
                                       metadata: SanityImageMetadata | null
                                       source?: SanityAssetSourceData
                                   } | null
@@ -696,14 +629,14 @@ export type PAGE_QUERYResult = {
                                       title?: string
                                       description?: string
                                       altText?: string
-                                      sha1hash?: string
-                                      extension?: string
-                                      mimeType?: string
-                                      size?: number
-                                      assetId?: string
+                                      sha1hash: string
+                                      extension: string
+                                      mimeType: string
+                                      size: number
+                                      assetId: string
                                       uploadId?: string
-                                      path?: string
-                                      url?: string
+                                      path: string
+                                      url: string
                                       metadata: SanityImageMetadata | null
                                       source?: SanityAssetSourceData
                                   } | null
@@ -734,14 +667,14 @@ export type PAGE_QUERYResult = {
                                       title?: string
                                       description?: string
                                       altText?: string
-                                      sha1hash?: string
-                                      extension?: string
-                                      mimeType?: string
-                                      size?: number
-                                      assetId?: string
+                                      sha1hash: string
+                                      extension: string
+                                      mimeType: string
+                                      size: number
+                                      assetId: string
                                       uploadId?: string
-                                      path?: string
-                                      url?: string
+                                      path: string
+                                      url: string
                                       metadata: SanityImageMetadata | null
                                       source?: SanityAssetSourceData
                                   } | null
@@ -796,14 +729,14 @@ export type PAGE_QUERYResult = {
             title?: string
             description?: string
             altText?: string
-            sha1hash?: string
-            extension?: string
-            mimeType?: string
-            size?: number
-            assetId?: string
+            sha1hash: string
+            extension: string
+            mimeType: string
+            size: number
+            assetId: string
             uploadId?: string
-            path?: string
-            url?: string
+            path: string
+            url: string
             metadata: SanityImageMetadata | null
             source?: SanityAssetSourceData
         } | null
@@ -813,16 +746,20 @@ export type PAGE_QUERYResult = {
         _type: 'image'
     }
 } | null
+
+// Source: src/sanity/lib/queries.ts
 // Variable: POST_PATHS_QUERY
 // Query: *[        _type == 'post' &&         defined(slug.current)    ]{             slug {        current    }    }
-export type POST_PATHS_QUERYResult = Array<{
+export type POST_PATHS_QUERY_RESULT = Array<{
     slug: {
         current: string
     }
 }>
+
+// Source: src/sanity/lib/queries.ts
 // Variable: POST_QUERY
 // Query: *[        _type == 'post' &&         defined(slug.current) &&        slug.current == $slug    ][0] {        _id,        _type,        title,        subtitle,            content[] {        ...,        _key,        _type,        'title': coalesce(title, 'Content Title'),            _type == 'frontpage' => {        title,        content,        buttons[] {            _key,            label,            customUrl,            destinationHref,            destinationRef-> {                _type,                title,                    slug {        current    }            },            blank        }    },            _type == 'body' => {        content[] {            ...,            markDefs[] {                ...,                (_type == 'link' && customUrl != true) => {                      destinationRef-> {                        _type,                        title,                            slug {        current    }                    }                }            },        }    },            _type == 'collectionGrid' => {        contentType,        limit,        "content": select(            defined(customContent) && contentType == 'custom' => customContent[]-> {                _id,                _type,                title,                subtitle,                excerpt,                    slug {        current    },                    image {        ...,        asset-> {            ...,            metadata        }    }            },            defined(contentType) && contentType != 'custom'  => *[_type == ^.contentType] {                _id,                _type,                title,                subtitle,                excerpt,                    slug {        current    },                    image {        ...,        asset-> {            ...,            metadata        }    }            }|order(title asc),            []        )    },            _type == 'album' => {        title,        images[] {            ...,            _type,            asset->,            crop,            hotspot        }    }    },            image {        ...,        asset-> {            ...,            metadata        }    }    }
-export type POST_QUERYResult = {
+export type POST_QUERY_RESULT = {
     _id: string
     _type: 'post'
     title: string
@@ -844,14 +781,14 @@ export type POST_QUERYResult = {
                       title?: string
                       description?: string
                       altText?: string
-                      sha1hash?: string
-                      extension?: string
-                      mimeType?: string
-                      size?: number
-                      assetId?: string
+                      sha1hash: string
+                      extension: string
+                      mimeType: string
+                      size: number
+                      assetId: string
                       uploadId?: string
-                      path?: string
-                      url?: string
+                      path: string
+                      url: string
                       metadata?: SanityImageMetadata
                       source?: SanityAssetSourceData
                   } | null
@@ -875,30 +812,12 @@ export type POST_QUERYResult = {
                       _key: string
                   }>
                   style?:
-                      | 'blockquote'
-                      | 'h2'
-                      | 'h3'
-                      | 'h4'
-                      | 'h5'
-                      | 'h6'
-                      | 'normal'
+                      'blockquote' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
                   listItem?: 'bullet' | 'number'
                   markDefs: Array<
                       | {
                             customUrl?: boolean
-                            destinationRef?:
-                                | {
-                                      _ref: string
-                                      _type: 'reference'
-                                      _weak?: boolean
-                                      [internalGroqTypeReferenceTo]?: 'page'
-                                  }
-                                | {
-                                      _ref: string
-                                      _type: 'reference'
-                                      _weak?: boolean
-                                      [internalGroqTypeReferenceTo]?: 'post'
-                                  }
+                            destinationRef?: PageReference | PostReference
                             destinationHref?: string
                             blank?: boolean
                             _type: 'link'
@@ -940,27 +859,15 @@ export type POST_QUERYResult = {
               contentType: 'custom' | 'page' | 'post' | 'work'
               limit: number | null
               customContent?: Array<
-                  | {
-                        _ref: string
-                        _type: 'reference'
-                        _weak?: boolean
+                  | ({
                         _key: string
-                        [internalGroqTypeReferenceTo]?: 'page'
-                    }
-                  | {
-                        _ref: string
-                        _type: 'reference'
-                        _weak?: boolean
+                    } & PageReference)
+                  | ({
                         _key: string
-                        [internalGroqTypeReferenceTo]?: 'post'
-                    }
-                  | {
-                        _ref: string
-                        _type: 'reference'
-                        _weak?: boolean
+                    } & PostReference)
+                  | ({
                         _key: string
-                        [internalGroqTypeReferenceTo]?: 'work'
-                    }
+                    } & WorkReference)
               >
               content:
                   | Array<never>
@@ -986,14 +893,14 @@ export type POST_QUERYResult = {
                                       title?: string
                                       description?: string
                                       altText?: string
-                                      sha1hash?: string
-                                      extension?: string
-                                      mimeType?: string
-                                      size?: number
-                                      assetId?: string
+                                      sha1hash: string
+                                      extension: string
+                                      mimeType: string
+                                      size: number
+                                      assetId: string
                                       uploadId?: string
-                                      path?: string
-                                      url?: string
+                                      path: string
+                                      url: string
                                       metadata: SanityImageMetadata | null
                                       source?: SanityAssetSourceData
                                   } | null
@@ -1024,14 +931,14 @@ export type POST_QUERYResult = {
                                       title?: string
                                       description?: string
                                       altText?: string
-                                      sha1hash?: string
-                                      extension?: string
-                                      mimeType?: string
-                                      size?: number
-                                      assetId?: string
+                                      sha1hash: string
+                                      extension: string
+                                      mimeType: string
+                                      size: number
+                                      assetId: string
                                       uploadId?: string
-                                      path?: string
-                                      url?: string
+                                      path: string
+                                      url: string
                                       metadata: SanityImageMetadata | null
                                       source?: SanityAssetSourceData
                                   } | null
@@ -1062,14 +969,14 @@ export type POST_QUERYResult = {
                                       title?: string
                                       description?: string
                                       altText?: string
-                                      sha1hash?: string
-                                      extension?: string
-                                      mimeType?: string
-                                      size?: number
-                                      assetId?: string
+                                      sha1hash: string
+                                      extension: string
+                                      mimeType: string
+                                      size: number
+                                      assetId: string
                                       uploadId?: string
-                                      path?: string
-                                      url?: string
+                                      path: string
+                                      url: string
                                       metadata: SanityImageMetadata | null
                                       source?: SanityAssetSourceData
                                   } | null
@@ -1124,14 +1031,14 @@ export type POST_QUERYResult = {
             title?: string
             description?: string
             altText?: string
-            sha1hash?: string
-            extension?: string
-            mimeType?: string
-            size?: number
-            assetId?: string
+            sha1hash: string
+            extension: string
+            mimeType: string
+            size: number
+            assetId: string
             uploadId?: string
-            path?: string
-            url?: string
+            path: string
+            url: string
             metadata: SanityImageMetadata | null
             source?: SanityAssetSourceData
         } | null
@@ -1141,16 +1048,20 @@ export type POST_QUERYResult = {
         _type: 'image'
     }
 } | null
+
+// Source: src/sanity/lib/queries.ts
 // Variable: WORK_PATHS_QUERY
 // Query: *[        _type == 'work' &&        defined(slug.current)    ] {            slug {        current    }    }
-export type WORK_PATHS_QUERYResult = Array<{
+export type WORK_PATHS_QUERY_RESULT = Array<{
     slug: {
         current: string
-    } | null
+    }
 }>
+
+// Source: src/sanity/lib/queries.ts
 // Variable: WORK_QUERY
 // Query: *[        _type == 'work' &&        defined(slug.current) &&        slug.current == $slug    ][0] {        _id,        _type,        title,        subtitle,        url,        uses,            content[] {        ...,        _key,        _type,        'title': coalesce(title, 'Content Title'),            _type == 'frontpage' => {        title,        content,        buttons[] {            _key,            label,            customUrl,            destinationHref,            destinationRef-> {                _type,                title,                    slug {        current    }            },            blank        }    },            _type == 'body' => {        content[] {            ...,            markDefs[] {                ...,                (_type == 'link' && customUrl != true) => {                      destinationRef-> {                        _type,                        title,                            slug {        current    }                    }                }            },        }    },            _type == 'collectionGrid' => {        contentType,        limit,        "content": select(            defined(customContent) && contentType == 'custom' => customContent[]-> {                _id,                _type,                title,                subtitle,                excerpt,                    slug {        current    },                    image {        ...,        asset-> {            ...,            metadata        }    }            },            defined(contentType) && contentType != 'custom'  => *[_type == ^.contentType] {                _id,                _type,                title,                subtitle,                excerpt,                    slug {        current    },                    image {        ...,        asset-> {            ...,            metadata        }    }            }|order(title asc),            []        )    },            _type == 'album' => {        title,        images[] {            ...,            _type,            asset->,            crop,            hotspot        }    }    },            image {        ...,        asset-> {            ...,            metadata        }    }    }
-export type WORK_QUERYResult = {
+export type WORK_QUERY_RESULT = {
     _id: string
     _type: 'work'
     title: string
@@ -1174,14 +1085,14 @@ export type WORK_QUERYResult = {
                       title?: string
                       description?: string
                       altText?: string
-                      sha1hash?: string
-                      extension?: string
-                      mimeType?: string
-                      size?: number
-                      assetId?: string
+                      sha1hash: string
+                      extension: string
+                      mimeType: string
+                      size: number
+                      assetId: string
                       uploadId?: string
-                      path?: string
-                      url?: string
+                      path: string
+                      url: string
                       metadata?: SanityImageMetadata
                       source?: SanityAssetSourceData
                   } | null
@@ -1205,30 +1116,12 @@ export type WORK_QUERYResult = {
                       _key: string
                   }>
                   style?:
-                      | 'blockquote'
-                      | 'h2'
-                      | 'h3'
-                      | 'h4'
-                      | 'h5'
-                      | 'h6'
-                      | 'normal'
+                      'blockquote' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
                   listItem?: 'bullet' | 'number'
                   markDefs: Array<
                       | {
                             customUrl?: boolean
-                            destinationRef?:
-                                | {
-                                      _ref: string
-                                      _type: 'reference'
-                                      _weak?: boolean
-                                      [internalGroqTypeReferenceTo]?: 'page'
-                                  }
-                                | {
-                                      _ref: string
-                                      _type: 'reference'
-                                      _weak?: boolean
-                                      [internalGroqTypeReferenceTo]?: 'post'
-                                  }
+                            destinationRef?: PageReference | PostReference
                             destinationHref?: string
                             blank?: boolean
                             _type: 'link'
@@ -1270,27 +1163,15 @@ export type WORK_QUERYResult = {
               contentType: 'custom' | 'page' | 'post' | 'work'
               limit: number | null
               customContent?: Array<
-                  | {
-                        _ref: string
-                        _type: 'reference'
-                        _weak?: boolean
+                  | ({
                         _key: string
-                        [internalGroqTypeReferenceTo]?: 'page'
-                    }
-                  | {
-                        _ref: string
-                        _type: 'reference'
-                        _weak?: boolean
+                    } & PageReference)
+                  | ({
                         _key: string
-                        [internalGroqTypeReferenceTo]?: 'post'
-                    }
-                  | {
-                        _ref: string
-                        _type: 'reference'
-                        _weak?: boolean
+                    } & PostReference)
+                  | ({
                         _key: string
-                        [internalGroqTypeReferenceTo]?: 'work'
-                    }
+                    } & WorkReference)
               >
               content:
                   | Array<never>
@@ -1316,14 +1197,14 @@ export type WORK_QUERYResult = {
                                       title?: string
                                       description?: string
                                       altText?: string
-                                      sha1hash?: string
-                                      extension?: string
-                                      mimeType?: string
-                                      size?: number
-                                      assetId?: string
+                                      sha1hash: string
+                                      extension: string
+                                      mimeType: string
+                                      size: number
+                                      assetId: string
                                       uploadId?: string
-                                      path?: string
-                                      url?: string
+                                      path: string
+                                      url: string
                                       metadata: SanityImageMetadata | null
                                       source?: SanityAssetSourceData
                                   } | null
@@ -1354,14 +1235,14 @@ export type WORK_QUERYResult = {
                                       title?: string
                                       description?: string
                                       altText?: string
-                                      sha1hash?: string
-                                      extension?: string
-                                      mimeType?: string
-                                      size?: number
-                                      assetId?: string
+                                      sha1hash: string
+                                      extension: string
+                                      mimeType: string
+                                      size: number
+                                      assetId: string
                                       uploadId?: string
-                                      path?: string
-                                      url?: string
+                                      path: string
+                                      url: string
                                       metadata: SanityImageMetadata | null
                                       source?: SanityAssetSourceData
                                   } | null
@@ -1392,14 +1273,14 @@ export type WORK_QUERYResult = {
                                       title?: string
                                       description?: string
                                       altText?: string
-                                      sha1hash?: string
-                                      extension?: string
-                                      mimeType?: string
-                                      size?: number
-                                      assetId?: string
+                                      sha1hash: string
+                                      extension: string
+                                      mimeType: string
+                                      size: number
+                                      assetId: string
                                       uploadId?: string
-                                      path?: string
-                                      url?: string
+                                      path: string
+                                      url: string
                                       metadata: SanityImageMetadata | null
                                       source?: SanityAssetSourceData
                                   } | null
@@ -1454,14 +1335,14 @@ export type WORK_QUERYResult = {
             title?: string
             description?: string
             altText?: string
-            sha1hash?: string
-            extension?: string
-            mimeType?: string
-            size?: number
-            assetId?: string
+            sha1hash: string
+            extension: string
+            mimeType: string
+            size: number
+            assetId: string
             uploadId?: string
-            path?: string
-            url?: string
+            path: string
+            url: string
             metadata: SanityImageMetadata | null
             source?: SanityAssetSourceData
         } | null
@@ -1471,9 +1352,11 @@ export type WORK_QUERYResult = {
         _type: 'image'
     }
 } | null
+
+// Source: src/sanity/lib/queries.ts
 // Variable: MENU_QUERY
 // Query: *[        _type == 'menu' &&         title == $title    ][0] {        ...,        links[] {            _key,            label,            customUrl,            destinationHref,            destinationRef->,            blank        }    }
-export type MENU_QUERYResult = {
+export type MENU_QUERY_RESULT = {
     _id: string
     _type: 'menu'
     _createdAt: string
@@ -1497,12 +1380,7 @@ export type MENU_QUERYResult = {
                   slug: Slug
                   content: Content
                   image: {
-                      asset?: {
-                          _ref: string
-                          _type: 'reference'
-                          _weak?: boolean
-                          [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
-                      }
+                      asset?: SanityImageAssetReference
                       media?: unknown
                       hotspot?: SanityImageHotspot
                       crop?: SanityImageCrop
@@ -1521,24 +1399,17 @@ export type MENU_QUERYResult = {
                   slug: Slug
                   content: Content
                   image: {
-                      asset?: {
-                          _ref: string
-                          _type: 'reference'
-                          _weak?: boolean
-                          [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
-                      }
+                      asset?: SanityImageAssetReference
                       media?: unknown
                       hotspot?: SanityImageHotspot
                       crop?: SanityImageCrop
                       _type: 'image'
                   }
-                  categories?: Array<{
-                      _ref: string
-                      _type: 'reference'
-                      _weak?: boolean
-                      _key: string
-                      [internalGroqTypeReferenceTo]?: 'category'
-                  }>
+                  categories?: Array<
+                      {
+                          _key: string
+                      } & CategoryReference
+                  >
                   seo: Seo
                   publishDate: string
               }
@@ -1546,9 +1417,11 @@ export type MENU_QUERYResult = {
         blank: boolean | null
     }> | null
 } | null
+
+// Source: src/sanity/lib/queries.ts
 // Variable: SETTINGS_QUERY
 // Query: *[_type == 'settings'][0] {        title,        description,        url,        socialLinks    }
-export type SETTINGS_QUERYResult = {
+export type SETTINGS_QUERY_RESULT = {
     title: string
     description: string
     url: string
@@ -1562,15 +1435,18 @@ export type SETTINGS_QUERYResult = {
             | 'Reddit'
             | 'Threads'
             | 'X'
+            | 'Xbox'
             | 'Youtube'
         url: string
         _type: 'socialLink'
         _key: string
     }> | null
 } | null
+
+// Source: src/sanity/lib/queries.ts
 // Variable: SITEMAP_QUERY
 // Query: *[        _type == "page" && defined(slug.current) ||        _type == "work" && defined(slug.current)    ] | order(slug.current desc) | order(_createdAt asc){        _type,        _updatedAt,        slug    }
-export type SITEMAP_QUERYResult = Array<
+export type SITEMAP_QUERY_RESULT = Array<
     | {
           _type: 'page'
           _updatedAt: string
@@ -1584,17 +1460,20 @@ export type SITEMAP_QUERYResult = Array<
 >
 
 // Query TypeMap
-import '@sanity/client'
-declare module '@sanity/client' {
+declare global {
     interface SanityQueries {
-        "\n    *[\n        _type == 'page' &&\n        defined(slug.current) &&\n        slug.current != '/'\n    ] {\n        \n    slug {\n        current\n    }\n\n    }\n": PAGE_PATHS_QUERYResult
-        "\n    *[\n        _type == 'page' && \n        defined(slug.current) &&\n        slug.current == $slug\n    ][0] {\n        _id,\n        _type,\n        title,\n        subtitle,\n        \n    content[] {\n        ...,\n        _key,\n        _type,\n        'title': coalesce(title, 'Content Title'),\n        \n    _type == 'frontpage' => {\n        title,\n        content,\n        buttons[] {\n            _key,\n            label,\n            customUrl,\n            destinationHref,\n            destinationRef-> {\n                _type,\n                title,\n                \n    slug {\n        current\n    }\n\n            },\n            blank\n        }\n    }\n,\n        \n    _type == 'body' => {\n        content[] {\n            ...,\n            markDefs[] {\n                ...,\n                (_type == 'link' && customUrl != true) => {  \n                    destinationRef-> {\n                        _type,\n                        title,\n                        \n    slug {\n        current\n    }\n\n                    }\n                }\n            },\n        }\n    }\n,\n        \n    _type == 'collectionGrid' => {\n        contentType,\n        limit,\n        \"content\": select(\n            defined(customContent) && contentType == 'custom' => customContent[]-> {\n                _id,\n                _type,\n                title,\n                subtitle,\n                excerpt,\n                \n    slug {\n        current\n    }\n,\n                \n    image {\n        ...,\n        asset-> {\n            ...,\n            metadata\n        }\n    }\n\n            },\n            defined(contentType) && contentType != 'custom'  => *[_type == ^.contentType] {\n                _id,\n                _type,\n                title,\n                subtitle,\n                excerpt,\n                \n    slug {\n        current\n    }\n,\n                \n    image {\n        ...,\n        asset-> {\n            ...,\n            metadata\n        }\n    }\n\n            }|order(title asc),\n            []\n        )\n    }\n,\n        \n    _type == 'album' => {\n        title,\n        images[] {\n            ...,\n            _type,\n            asset->,\n            crop,\n            hotspot\n        }\n    }\n\n    }\n,\n        \n    image {\n        ...,\n        asset-> {\n            ...,\n            metadata\n        }\n    }\n\n    }\n": PAGE_QUERYResult
-        "\n    *[\n        _type == 'post' && \n        defined(slug.current)\n    ]{ \n        \n    slug {\n        current\n    }\n\n    }\n": POST_PATHS_QUERYResult
-        "\n    *[\n        _type == 'post' && \n        defined(slug.current) &&\n        slug.current == $slug\n    ][0] {\n        _id,\n        _type,\n        title,\n        subtitle,\n        \n    content[] {\n        ...,\n        _key,\n        _type,\n        'title': coalesce(title, 'Content Title'),\n        \n    _type == 'frontpage' => {\n        title,\n        content,\n        buttons[] {\n            _key,\n            label,\n            customUrl,\n            destinationHref,\n            destinationRef-> {\n                _type,\n                title,\n                \n    slug {\n        current\n    }\n\n            },\n            blank\n        }\n    }\n,\n        \n    _type == 'body' => {\n        content[] {\n            ...,\n            markDefs[] {\n                ...,\n                (_type == 'link' && customUrl != true) => {  \n                    destinationRef-> {\n                        _type,\n                        title,\n                        \n    slug {\n        current\n    }\n\n                    }\n                }\n            },\n        }\n    }\n,\n        \n    _type == 'collectionGrid' => {\n        contentType,\n        limit,\n        \"content\": select(\n            defined(customContent) && contentType == 'custom' => customContent[]-> {\n                _id,\n                _type,\n                title,\n                subtitle,\n                excerpt,\n                \n    slug {\n        current\n    }\n,\n                \n    image {\n        ...,\n        asset-> {\n            ...,\n            metadata\n        }\n    }\n\n            },\n            defined(contentType) && contentType != 'custom'  => *[_type == ^.contentType] {\n                _id,\n                _type,\n                title,\n                subtitle,\n                excerpt,\n                \n    slug {\n        current\n    }\n,\n                \n    image {\n        ...,\n        asset-> {\n            ...,\n            metadata\n        }\n    }\n\n            }|order(title asc),\n            []\n        )\n    }\n,\n        \n    _type == 'album' => {\n        title,\n        images[] {\n            ...,\n            _type,\n            asset->,\n            crop,\n            hotspot\n        }\n    }\n\n    }\n,\n        \n    image {\n        ...,\n        asset-> {\n            ...,\n            metadata\n        }\n    }\n\n    }\n": POST_QUERYResult
-        "\n    *[\n        _type == 'work' &&\n        defined(slug.current)\n    ] {\n        \n    slug {\n        current\n    }\n\n    }\n": WORK_PATHS_QUERYResult
-        "\n    *[\n        _type == 'work' &&\n        defined(slug.current) &&\n        slug.current == $slug\n    ][0] {\n        _id,\n        _type,\n        title,\n        subtitle,\n        url,\n        uses,\n        \n    content[] {\n        ...,\n        _key,\n        _type,\n        'title': coalesce(title, 'Content Title'),\n        \n    _type == 'frontpage' => {\n        title,\n        content,\n        buttons[] {\n            _key,\n            label,\n            customUrl,\n            destinationHref,\n            destinationRef-> {\n                _type,\n                title,\n                \n    slug {\n        current\n    }\n\n            },\n            blank\n        }\n    }\n,\n        \n    _type == 'body' => {\n        content[] {\n            ...,\n            markDefs[] {\n                ...,\n                (_type == 'link' && customUrl != true) => {  \n                    destinationRef-> {\n                        _type,\n                        title,\n                        \n    slug {\n        current\n    }\n\n                    }\n                }\n            },\n        }\n    }\n,\n        \n    _type == 'collectionGrid' => {\n        contentType,\n        limit,\n        \"content\": select(\n            defined(customContent) && contentType == 'custom' => customContent[]-> {\n                _id,\n                _type,\n                title,\n                subtitle,\n                excerpt,\n                \n    slug {\n        current\n    }\n,\n                \n    image {\n        ...,\n        asset-> {\n            ...,\n            metadata\n        }\n    }\n\n            },\n            defined(contentType) && contentType != 'custom'  => *[_type == ^.contentType] {\n                _id,\n                _type,\n                title,\n                subtitle,\n                excerpt,\n                \n    slug {\n        current\n    }\n,\n                \n    image {\n        ...,\n        asset-> {\n            ...,\n            metadata\n        }\n    }\n\n            }|order(title asc),\n            []\n        )\n    }\n,\n        \n    _type == 'album' => {\n        title,\n        images[] {\n            ...,\n            _type,\n            asset->,\n            crop,\n            hotspot\n        }\n    }\n\n    }\n,\n        \n    image {\n        ...,\n        asset-> {\n            ...,\n            metadata\n        }\n    }\n\n    }\n": WORK_QUERYResult
-        "\n    *[\n        _type == 'menu' && \n        title == $title\n    ][0] {\n        ...,\n        links[] {\n            _key,\n            label,\n            customUrl,\n            destinationHref,\n            destinationRef->,\n            blank\n        }\n    }   \n": MENU_QUERYResult
-        "\n    *[_type == 'settings'][0] {\n        title,\n        description,\n        url,\n        socialLinks\n    }\n": SETTINGS_QUERYResult
-        '\n    *[\n        _type == "page" && defined(slug.current) ||\n        _type == "work" && defined(slug.current)\n    ] | order(slug.current desc) | order(_createdAt asc){\n        _type,\n        _updatedAt,\n        slug\n    }\n': SITEMAP_QUERYResult
+        "\n    *[\n        _type == 'page' &&\n        defined(slug.current) &&\n        slug.current != '/'\n    ] {\n        \n    slug {\n        current\n    }\n\n    }\n": PAGE_PATHS_QUERY_RESULT
+        "\n    *[\n        _type == 'page' && \n        defined(slug.current) &&\n        slug.current == $slug\n    ][0] {\n        _id,\n        _type,\n        title,\n        subtitle,\n        \n    content[] {\n        ...,\n        _key,\n        _type,\n        'title': coalesce(title, 'Content Title'),\n        \n    _type == 'frontpage' => {\n        title,\n        content,\n        buttons[] {\n            _key,\n            label,\n            customUrl,\n            destinationHref,\n            destinationRef-> {\n                _type,\n                title,\n                \n    slug {\n        current\n    }\n\n            },\n            blank\n        }\n    }\n,\n        \n    _type == 'body' => {\n        content[] {\n            ...,\n            markDefs[] {\n                ...,\n                (_type == 'link' && customUrl != true) => {  \n                    destinationRef-> {\n                        _type,\n                        title,\n                        \n    slug {\n        current\n    }\n\n                    }\n                }\n            },\n        }\n    }\n,\n        \n    _type == 'collectionGrid' => {\n        contentType,\n        limit,\n        \"content\": select(\n            defined(customContent) && contentType == 'custom' => customContent[]-> {\n                _id,\n                _type,\n                title,\n                subtitle,\n                excerpt,\n                \n    slug {\n        current\n    }\n,\n                \n    image {\n        ...,\n        asset-> {\n            ...,\n            metadata\n        }\n    }\n\n            },\n            defined(contentType) && contentType != 'custom'  => *[_type == ^.contentType] {\n                _id,\n                _type,\n                title,\n                subtitle,\n                excerpt,\n                \n    slug {\n        current\n    }\n,\n                \n    image {\n        ...,\n        asset-> {\n            ...,\n            metadata\n        }\n    }\n\n            }|order(title asc),\n            []\n        )\n    }\n,\n        \n    _type == 'album' => {\n        title,\n        images[] {\n            ...,\n            _type,\n            asset->,\n            crop,\n            hotspot\n        }\n    }\n\n    }\n,\n        \n    image {\n        ...,\n        asset-> {\n            ...,\n            metadata\n        }\n    }\n\n    }\n": PAGE_QUERY_RESULT
+        "\n    *[\n        _type == 'post' && \n        defined(slug.current)\n    ]{ \n        \n    slug {\n        current\n    }\n\n    }\n": POST_PATHS_QUERY_RESULT
+        "\n    *[\n        _type == 'post' && \n        defined(slug.current) &&\n        slug.current == $slug\n    ][0] {\n        _id,\n        _type,\n        title,\n        subtitle,\n        \n    content[] {\n        ...,\n        _key,\n        _type,\n        'title': coalesce(title, 'Content Title'),\n        \n    _type == 'frontpage' => {\n        title,\n        content,\n        buttons[] {\n            _key,\n            label,\n            customUrl,\n            destinationHref,\n            destinationRef-> {\n                _type,\n                title,\n                \n    slug {\n        current\n    }\n\n            },\n            blank\n        }\n    }\n,\n        \n    _type == 'body' => {\n        content[] {\n            ...,\n            markDefs[] {\n                ...,\n                (_type == 'link' && customUrl != true) => {  \n                    destinationRef-> {\n                        _type,\n                        title,\n                        \n    slug {\n        current\n    }\n\n                    }\n                }\n            },\n        }\n    }\n,\n        \n    _type == 'collectionGrid' => {\n        contentType,\n        limit,\n        \"content\": select(\n            defined(customContent) && contentType == 'custom' => customContent[]-> {\n                _id,\n                _type,\n                title,\n                subtitle,\n                excerpt,\n                \n    slug {\n        current\n    }\n,\n                \n    image {\n        ...,\n        asset-> {\n            ...,\n            metadata\n        }\n    }\n\n            },\n            defined(contentType) && contentType != 'custom'  => *[_type == ^.contentType] {\n                _id,\n                _type,\n                title,\n                subtitle,\n                excerpt,\n                \n    slug {\n        current\n    }\n,\n                \n    image {\n        ...,\n        asset-> {\n            ...,\n            metadata\n        }\n    }\n\n            }|order(title asc),\n            []\n        )\n    }\n,\n        \n    _type == 'album' => {\n        title,\n        images[] {\n            ...,\n            _type,\n            asset->,\n            crop,\n            hotspot\n        }\n    }\n\n    }\n,\n        \n    image {\n        ...,\n        asset-> {\n            ...,\n            metadata\n        }\n    }\n\n    }\n": POST_QUERY_RESULT
+        "\n    *[\n        _type == 'work' &&\n        defined(slug.current)\n    ] {\n        \n    slug {\n        current\n    }\n\n    }\n": WORK_PATHS_QUERY_RESULT
+        "\n    *[\n        _type == 'work' &&\n        defined(slug.current) &&\n        slug.current == $slug\n    ][0] {\n        _id,\n        _type,\n        title,\n        subtitle,\n        url,\n        uses,\n        \n    content[] {\n        ...,\n        _key,\n        _type,\n        'title': coalesce(title, 'Content Title'),\n        \n    _type == 'frontpage' => {\n        title,\n        content,\n        buttons[] {\n            _key,\n            label,\n            customUrl,\n            destinationHref,\n            destinationRef-> {\n                _type,\n                title,\n                \n    slug {\n        current\n    }\n\n            },\n            blank\n        }\n    }\n,\n        \n    _type == 'body' => {\n        content[] {\n            ...,\n            markDefs[] {\n                ...,\n                (_type == 'link' && customUrl != true) => {  \n                    destinationRef-> {\n                        _type,\n                        title,\n                        \n    slug {\n        current\n    }\n\n                    }\n                }\n            },\n        }\n    }\n,\n        \n    _type == 'collectionGrid' => {\n        contentType,\n        limit,\n        \"content\": select(\n            defined(customContent) && contentType == 'custom' => customContent[]-> {\n                _id,\n                _type,\n                title,\n                subtitle,\n                excerpt,\n                \n    slug {\n        current\n    }\n,\n                \n    image {\n        ...,\n        asset-> {\n            ...,\n            metadata\n        }\n    }\n\n            },\n            defined(contentType) && contentType != 'custom'  => *[_type == ^.contentType] {\n                _id,\n                _type,\n                title,\n                subtitle,\n                excerpt,\n                \n    slug {\n        current\n    }\n,\n                \n    image {\n        ...,\n        asset-> {\n            ...,\n            metadata\n        }\n    }\n\n            }|order(title asc),\n            []\n        )\n    }\n,\n        \n    _type == 'album' => {\n        title,\n        images[] {\n            ...,\n            _type,\n            asset->,\n            crop,\n            hotspot\n        }\n    }\n\n    }\n,\n        \n    image {\n        ...,\n        asset-> {\n            ...,\n            metadata\n        }\n    }\n\n    }\n": WORK_QUERY_RESULT
+        "\n    *[\n        _type == 'menu' && \n        title == $title\n    ][0] {\n        ...,\n        links[] {\n            _key,\n            label,\n            customUrl,\n            destinationHref,\n            destinationRef->,\n            blank\n        }\n    }   \n": MENU_QUERY_RESULT
+        "\n    *[_type == 'settings'][0] {\n        title,\n        description,\n        url,\n        socialLinks\n    }\n": SETTINGS_QUERY_RESULT
+        '\n    *[\n        _type == "page" && defined(slug.current) ||\n        _type == "work" && defined(slug.current)\n    ] | order(slug.current desc) | order(_createdAt asc){\n        _type,\n        _updatedAt,\n        slug\n    }\n': SITEMAP_QUERY_RESULT
     }
+}
+// Lets @sanity/client releases that predate the global registry read it too
+declare module '@sanity/client' {
+    interface SanityQueries extends globalThis.SanityQueries {}
 }

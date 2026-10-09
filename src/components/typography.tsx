@@ -3,12 +3,16 @@
  * @description Compliments ShadCN UI by providing a set of composable typography components
  */
 import { cn } from '@/lib/utils'
-import { Slot } from '@radix-ui/react-slot'
+import { useRender } from '@base-ui/react/use-render'
 import { VariantProps, cva } from 'class-variance-authority'
-import React from 'react'
+import * as React from 'react'
 
 /**
- * Define base classes for typography components
+ * Line heights are set with the `text-{size}/{leading}` shorthand so they travel
+ * with the font size and can't be dropped by tailwind-merge (a standalone
+ * `leading-*` is removed whenever a later `text-{size}` class is merged in).
+ * Convention: sizes up to `xl` use Tailwind's default ratios, `2xl`–`4xl` use
+ * `/tight` and `5xl` and above use `/none`.
  */
 export const headingBaseClasses = [
     'text-pretty',
@@ -22,34 +26,34 @@ const typographyVariants = cva([], {
         variant: {
             h1: [
                 ...headingBaseClasses,
-                'text-4xl',
-                'md:text-5xl',
-                'lg:text-6xl',
-                'xl:text-7xl'
+                'text-4xl/tight',
+                'md:text-5xl/none',
+                'lg:text-6xl/none',
+                'xl:text-7xl/none'
             ],
             h2: [
                 ...headingBaseClasses,
                 'font-semibold',
-                'text-2xl',
-                'md:text-3xl',
-                'lg:text-4xl',
-                'xl:text-5xl'
+                'text-2xl/tight',
+                'md:text-3xl/tight',
+                'lg:text-4xl/tight',
+                'xl:text-5xl/none'
             ],
             h3: [
                 ...headingBaseClasses,
                 'font-semibold',
                 'text-xl',
-                'md:text-2xl',
-                'lg:text-3xl',
-                'xl:text-4xl'
+                'md:text-2xl/tight',
+                'lg:text-3xl/tight',
+                'xl:text-4xl/tight'
             ],
             h4: [
                 ...headingBaseClasses,
                 'font-semibold',
                 'text-lg',
                 'md:text-xl',
-                'lg:text-2xl',
-                'xl:text-3xl'
+                'lg:text-2xl/tight',
+                'xl:text-3xl/tight'
             ],
             h5: [
                 ...headingBaseClasses,
@@ -57,7 +61,7 @@ const typographyVariants = cva([], {
                 'text-base',
                 'md:text-lg',
                 'lg:text-xl',
-                'xl:text-2xl'
+                'xl:text-2xl/tight'
             ],
             h6: [
                 ...headingBaseClasses,
@@ -70,10 +74,7 @@ const typographyVariants = cva([], {
             link: [
                 ...proseBaseClasses,
                 'inline',
-                'transition-all',
-                'duration-200',
                 'underline-offset-4',
-                'hover:text-brand-foreground',
                 'hover:underline'
             ],
             p: [...proseBaseClasses],
@@ -81,8 +82,8 @@ const typographyVariants = cva([], {
             lead: [
                 ...proseBaseClasses,
                 'sm:text-xl',
-                'md:text-2xl',
-                'lg:text-3xl'
+                'md:text-2xl/tight',
+                'lg:text-3xl/tight'
             ],
             blockquote: [
                 ...proseBaseClasses,
@@ -100,11 +101,16 @@ const typographyVariants = cva([], {
             ul: ['list-disc', 'list-inside', 'ps-4', 'space-y-2', 'my-2'],
             ol: ['list-decimal', 'list-inside', 'ps-4', 'space-y-2', 'my-2'],
             li: [...proseBaseClasses],
-            em: [...proseBaseClasses, 'italic', 'inline'],
-            strong: [...proseBaseClasses, 'font-semibold', 'inline'],
             small: ['text-sm'],
             address: [...proseBaseClasses, 'not-italic!', 'max-w-xs'],
-            del: [...proseBaseClasses, 'line-through']
+            /**
+             * Inline marks - inherit size, font and colour from their parent
+             * so they sit correctly inside headings, leads, etc.
+             */
+            em: ['italic'],
+            strong: ['font-semibold'],
+            del: ['line-through'],
+            underline: ['underline', 'underline-offset-4']
         },
         muted: {
             true: ['text-muted-foreground']
@@ -115,14 +121,14 @@ const typographyVariants = cva([], {
             base: ['text-base'],
             lg: ['text-lg'],
             xl: ['text-xl'],
-            '2xl': ['text-2xl'],
-            '3xl': ['text-3xl'],
-            '4xl': ['text-4xl'],
-            '5xl': ['text-5xl'],
-            '6xl': ['text-6xl'],
-            '7xl': ['text-7xl'],
-            '8xl': ['text-8xl'],
-            '9xl': ['text-9xl']
+            '2xl': ['text-2xl/tight'],
+            '3xl': ['text-3xl/tight'],
+            '4xl': ['text-4xl/tight'],
+            '5xl': ['text-5xl/none'],
+            '6xl': ['text-6xl/none'],
+            '7xl': ['text-7xl/none'],
+            '8xl': ['text-8xl/none'],
+            '9xl': ['text-9xl/none']
         },
         weight: {
             thin: ['font-thin'],
@@ -138,41 +144,72 @@ const typographyVariants = cva([], {
         display: { true: '' }
     },
     compoundVariants: [
+        /**
+         * Display [display] - Increase font size for larger text elements
+         */
         {
             variant: 'h1',
             display: true,
-            className: ['text-6xl', 'md:text-7xl', 'lg:text-8xl', 'xl:text-9xl']
+            className: [
+                'text-6xl/none',
+                'md:text-7xl/none',
+                'lg:text-8xl/none',
+                'xl:text-9xl/none'
+            ]
         },
         {
             variant: 'h2',
             display: true,
-            className: ['text-5xl', 'md:text-6xl', 'lg:text-7xl', 'xl:text-8xl']
+            className: [
+                'text-5xl/none',
+                'md:text-6xl/none',
+                'lg:text-7xl/none',
+                'xl:text-8xl/none'
+            ]
         },
         {
             variant: 'h3',
             display: true,
-            className: ['text-4xl', 'md:text-5xl', 'lg:text-6xl', 'xl:text-7xl']
+            className: [
+                'text-4xl/tight',
+                'md:text-5xl/none',
+                'lg:text-6xl/none',
+                'xl:text-7xl/none'
+            ]
         },
         {
             variant: 'h4',
             display: true,
-            className: ['text-3xl', 'md:text-4xl', 'lg:text-5xl', 'xl:text-6xl']
+            className: [
+                'text-3xl/tight',
+                'md:text-4xl/tight',
+                'lg:text-5xl/none',
+                'xl:text-6xl/none'
+            ]
         },
         {
             variant: 'h5',
             display: true,
-            className: ['text-2xl', 'md:text-3xl', 'lg:text-4xl', 'xl:text-5xl']
+            className: [
+                'text-2xl/tight',
+                'md:text-3xl/tight',
+                'lg:text-4xl/tight',
+                'xl:text-5xl/none'
+            ]
         },
         {
             variant: 'h6',
             display: true,
-            className: ['text-xl', 'md:text-2xl', 'lg:text-3xl', 'xl:text-4xl']
+            className: [
+                'text-xl',
+                'md:text-2xl/tight',
+                'lg:text-3xl/tight',
+                'xl:text-4xl/tight'
+            ]
         }
     ],
     defaultVariants: {
-        variant: 'p',
-        muted: false,
-        display: false
+        variant: 'p'
     }
 })
 
@@ -180,7 +217,7 @@ type VariantPropType = VariantProps<typeof typographyVariants>
 
 const variantElementMap: Record<
     NonNullable<VariantPropType['variant']>,
-    string
+    keyof React.JSX.IntrinsicElements
 > = {
     h1: 'h1',
     h2: 'h2',
@@ -196,54 +233,56 @@ const variantElementMap: Record<
     ul: 'ul',
     ol: 'ol',
     li: 'li',
-    em: 'em',
-    strong: 'strong',
     small: 'small',
     address: 'address',
-    del: 'del'
+    em: 'em',
+    strong: 'strong',
+    del: 'del',
+    underline: 'span'
 }
 
 export interface TypographyProps
-    extends React.HTMLAttributes<HTMLElement>,
-        VariantProps<typeof typographyVariants> {
-    asChild?: boolean
-    as?: string
-    disableSelect?: boolean
+    extends
+        Omit<
+            React.AllHTMLAttributes<HTMLElement>,
+            keyof VariantPropType | 'as'
+        >,
+        VariantPropType {
+    ref?: React.Ref<HTMLElement>
+    render?: useRender.RenderProp
+    as?: keyof React.JSX.IntrinsicElements
 }
 
 const Typography = ({
     className,
-    variant = 'p',
+    variant,
+    as,
+    render,
+    ref,
     muted,
     size,
     weight,
     display,
-    as,
-    asChild,
-    disableSelect,
     ...props
-}: TypographyProps) => {
-    const Component = asChild
-        ? Slot
-        : (as ?? (variant ? variantElementMap[variant] : undefined) ?? 'div')
-    return (
-        <Component
-            className={cn(
+}: TypographyProps) =>
+    useRender({
+        // Fall back to the same 'p' default as `defaultVariants` so the element matches the styles
+        defaultTagName: as ?? variantElementMap[variant ?? 'p'],
+        render,
+        ref,
+        props: {
+            ...props,
+            className: cn(
                 typographyVariants({
                     variant,
-                    className,
                     muted,
                     size,
                     weight,
-                    display
-                }),
-                disableSelect && 'select-none'
-            )}
-            {...props}
-        />
-    )
-}
-
-Typography.displayName = 'Typography'
+                    display,
+                    className
+                })
+            )
+        }
+    })
 
 export { Typography, typographyVariants }

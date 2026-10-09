@@ -2,10 +2,10 @@
  * SlinkyPixels : Content : Frontpage
  */
 import Link from '@/components/link'
-import { headingBaseClasses, Typography } from '@/components/typography'
+import { Typography } from '@/components/typography'
 import { resolveLinkURL } from '@/lib/helpers'
 import { cn } from '@/lib/utils'
-import { Button, buttonVariants } from '@ui/button'
+import { buttonVariants } from '@ui/button'
 
 const Frontpage = ({
     id,
@@ -47,15 +47,13 @@ const Frontpage = ({
                 variant='h1'
                 display
                 className={cn([
-                    headingBaseClasses,
                     'px-2',
                     'text-transparent',
                     'bg-linear-125',
                     'from-primary',
                     'via-secondary',
                     'to-tertiary',
-                    'bg-clip-text',
-                    'tracking-tighter'
+                    'bg-clip-text'
                 ])}>
                 {title}
             </Typography>
@@ -101,9 +99,10 @@ const Frontpage = ({
                         })
 
                         return (
-                            <Button
-                                asChild
+                            <Link
                                 key={_key}
+                                target={blank ? '_blank' : '_self'}
+                                href={href}
                                 className={cn(
                                     buttonVariants({
                                         variant: 'secondary',
@@ -113,12 +112,8 @@ const Frontpage = ({
                                     'min-w-24',
                                     'hover:text-background'
                                 )}>
-                                <Link
-                                    target={blank ? '_blank' : '_self'}
-                                    href={href}>
-                                    {label}
-                                </Link>
-                            </Button>
+                                {label}
+                            </Link>
                         )
                     })}
                 </div>

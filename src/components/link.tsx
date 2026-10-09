@@ -11,7 +11,7 @@ const Link = ({
     className,
     ...rest
 }: {
-    children: React.ReactNode
+    children?: React.ReactNode
     href: string
     target?: string
     className?: string

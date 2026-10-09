@@ -4,14 +4,14 @@
 import { CopyrightIcon } from '@/components/icons'
 import SocialLinks from '@/components/social-links'
 import { Typography } from '@/components/typography'
-import { client } from '@/sanity/lib/client'
+import { sanityFetch } from '@/sanity/lib/live'
 import { SETTINGS_QUERY } from '@/sanity/lib/queries'
 
 const Footer = async () => {
     /**
      * Get settings
      */
-    const settings = await client.fetch(SETTINGS_QUERY)
+    const { data: settings } = await sanityFetch({ query: SETTINGS_QUERY })
 
     /**
      * Destructure social links
