@@ -8,11 +8,11 @@ import Frontpage from '@/components/content/frontpage'
 import { cn } from '@/lib/utils'
 import { client } from '@/sanity/lib/client'
 import {
-    PAGE_QUERYResult,
-    POST_QUERYResult,
-    WORK_QUERYResult
+    PAGE_QUERY_RESULT,
+    POST_QUERY_RESULT,
+    WORK_QUERY_RESULT
 } from '@/sanity/types'
-import { createDataAttribute } from 'next-sanity'
+import { createDataAttribute, StegaBranded, StegaCleaned } from 'next-sanity'
 
 /**
  * Lookup map to match content type to a component
@@ -66,11 +66,20 @@ const Content = ({
  * Compose content block types into content components
  * indexed access types to allow more content types post, team, proposal etc...
  */
+type ContentDocumentQueryResult = Extract<
+    PAGE_QUERY_RESULT | POST_QUERY_RESULT | WORK_QUERY_RESULT,
+    { content: unknown }
+>
+
+/**
+ * Stega-aware: content keeps stega encoding in draft mode so Visual Editing can
+ * offer click-to-edit, so string leaves may carry a `StegaString` brand.
+ */
 type ContentType =
-    | Extract<
-          PAGE_QUERYResult | POST_QUERYResult | WORK_QUERYResult,
-          { content: unknown }
-      >['content']
+    | (
+          | StegaCleaned<ContentDocumentQueryResult>
+          | StegaBranded<ContentDocumentQueryResult>
+      )['content']
     | null
 
 const Composer = ({

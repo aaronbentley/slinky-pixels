@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+/* Define dark variant as data attribute */
+@custom-variant dark (&:is([data-theme='dark'] *));
 
 :root {
     /* Purple 600 / 400 */
@@ -41,7 +45,7 @@
     --radius: 0.5rem;
 }
 
-.dark {
+[data-theme='dark'] {
     /* Purple 400 / 300 */
     --primary: oklch(71.4% 0.203 305.504);
     --primary-foreground: oklch(82.7% 0.119 306.383);
@@ -82,9 +86,13 @@
 @theme inline {
     --font-sans: var(--font-geist-sans);
 
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
     --radius-lg: var(--radius);
-    --radius-md: calc(var(--radius) - 2px);
-    --radius-sm: calc(var(--radius) - 4px);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
 
     --color-primary: var(--primary);
     --color-primary-foreground: var(--primary-foreground);

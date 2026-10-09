@@ -3,8 +3,8 @@ const assertValue = <T>(v: T | undefined, errorMessage: string): T => {
     return v
 }
 
-export const apiVersion =
-    process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2024-11-14'
+// https://www.sanity.io/docs/api-versioning
+export const apiVersion = '2026-10-01'
 
 export const dataset = assertValue(
     process.env.NEXT_PUBLIC_SANITY_DATASET,

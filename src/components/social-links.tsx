@@ -15,7 +15,7 @@ import {
 } from '@/components/icons'
 import Link from '@/components/link'
 import { cn } from '@/lib/utils'
-import { Settings } from '@/sanity/types'
+import { stegaClean } from 'next-sanity'
 
 /**
  * Social icons map
@@ -37,7 +37,8 @@ const SocialLinks = ({
     socialLinks,
     className
 }: {
-    socialLinks: Settings['socialLinks']
+    socialLinks:
+        { _key: string; name?: string | null; url?: string | null }[] | null
     className?: string
 }) => {
     return (
@@ -50,14 +51,18 @@ const SocialLinks = ({
                 socialLinks.map((socialLink) => {
                     if (!socialLink.name || !socialLink.url) return null
 
-                    const Icon = socialIcons[socialLink.name]
+                    // Clean stega encoding before using the name as a lookup key
+                    const name = stegaClean(socialLink.name)
+                    const Icon = socialIcons[name]
+
+                    if (!Icon) return null
 
                     return (
                         <Link
                             href={socialLink.url}
                             key={socialLink._key}
-                            title={`Say hi on ${socialLink.name}`}
-                            aria-label={`Say hi on ${socialLink.name}`}
+                            title={`Say hi on ${name}`}
+                            aria-label={`Say hi on ${name}`}
                             rel='noopener noreferrer'
                             target='_blank'
                             className='group'>

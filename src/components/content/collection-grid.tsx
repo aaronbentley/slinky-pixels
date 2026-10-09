@@ -13,6 +13,7 @@ import {
     CardHeader,
     CardTitle
 } from '@ui/card'
+import { stegaClean } from 'next-sanity'
 
 type CollectionGridContentItemProps = {
     _id: string
@@ -38,14 +39,19 @@ const CollectionGrid = async ({
     content?: CollectionGridContentItemProps[] | null
 }) => {
     /**
+     * Clean stega encoding before comparing against literals
+     */
+    const type = stegaClean(contentType)
+
+    /**
      * If no contentType return null
      */
-    if (!contentType) return null
+    if (!type) return null
 
     /**
      * If contentType is custom & no custom return null
      */
-    if (contentType === 'custom' && !content) return null
+    if (type === 'custom' && !content) return null
 
     return (
         <div
@@ -54,7 +60,7 @@ const CollectionGrid = async ({
             className={cn(['container', 'lg:max-w-[980px]'])}>
             <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
                 {content &&
-                    (contentType !== 'custom' && limit
+                    (type !== 'custom' && limit
                         ? content.slice(0, limit)
                         : content
                     ).map((contentItem) => {

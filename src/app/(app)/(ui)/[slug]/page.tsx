@@ -31,14 +31,11 @@ export const generateStaticParams = async () => {
     }))
 }
 
-export const generateMetadata = async ({
-    params
-}: {
-    params: Promise<{ slug: string }>
-}) => {
+export const generateMetadata = async ({ params }: PageProps<'/[slug]'>) => {
     const { data: page } = await sanityFetch({
         query: PAGE_QUERY,
-        params: await params
+        params: await params,
+        stega: false
     })
 
     /**
@@ -51,7 +48,7 @@ export const generateMetadata = async ({
     }
 }
 
-const Page = async ({ params }: { params: Promise<{ slug: string[] }> }) => {
+const Page = async ({ params }: PageProps<'/[slug]'>) => {
     const { data: page } = await sanityFetch({
         query: PAGE_QUERY,
         params: await params
@@ -80,13 +77,15 @@ const Page = async ({ params }: { params: Promise<{ slug: string[] }> }) => {
                         <Breadcrumb>
                             <BreadcrumbList>
                                 <BreadcrumbItem>
-                                    <BreadcrumbLink asChild>
-                                        <Link
-                                            href='/'
-                                            title='Go to Frontpage'
-                                            aria-label='Go to Frontpage'>
-                                            <FrontPageIcon className='size-3 text-muted-foreground hover:text-foreground' />
-                                        </Link>
+                                    <BreadcrumbLink
+                                        render={
+                                            <Link
+                                                href='/'
+                                                title='Go to Frontpage'
+                                                aria-label='Go to Frontpage'
+                                            />
+                                        }>
+                                        <FrontPageIcon className='size-3 text-muted-foreground hover:text-foreground' />
                                     </BreadcrumbLink>
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator />

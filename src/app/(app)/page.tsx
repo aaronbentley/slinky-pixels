@@ -4,7 +4,6 @@
 import Composer from '@/components/composer'
 import { sanityFetch } from '@/sanity/lib/live'
 import { PAGE_QUERY } from '@/sanity/lib/queries'
-import { PAGE_QUERYResult } from '@/sanity/types'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
@@ -15,11 +14,7 @@ export const metadata: Metadata = {
 }
 
 const Frontpage = async () => {
-    const {
-        data: frontPage
-    }: {
-        data: PAGE_QUERYResult
-    } = await sanityFetch({
+    const { data: frontPage } = await sanityFetch({
         query: PAGE_QUERY,
         params: {
             slug: '/'

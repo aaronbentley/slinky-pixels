@@ -35,12 +35,11 @@ export const generateStaticParams = async () => {
 
 export const generateMetadata = async ({
     params
-}: {
-    params: Promise<{ slug: string }>
-}) => {
+}: PageProps<'/work/[slug]'>) => {
     const { data: work } = await sanityFetch({
         query: WORK_QUERY,
-        params: await params
+        params: await params,
+        stega: false
     })
 
     /**
@@ -53,7 +52,7 @@ export const generateMetadata = async ({
     }
 }
 
-const Work = async ({ params }: { params: Promise<{ slug: string }> }) => {
+const Work = async ({ params }: PageProps<'/work/[slug]'>) => {
     const { data: work } = await sanityFetch({
         query: WORK_QUERY,
         params: await params
@@ -72,29 +71,33 @@ const Work = async ({ params }: { params: Promise<{ slug: string }> }) => {
                         <Breadcrumb>
                             <BreadcrumbList>
                                 <BreadcrumbItem>
-                                    <BreadcrumbLink asChild>
-                                        <Link
-                                            href='/'
-                                            title='Go to Frontpage'
-                                            aria-label='Go to Frontpage'>
-                                            <FrontPageIcon className='size-3 text-muted-foreground hover:text-foreground' />
-                                        </Link>
+                                    <BreadcrumbLink
+                                        render={
+                                            <Link
+                                                href='/'
+                                                title='Go to Frontpage'
+                                                aria-label='Go to Frontpage'
+                                            />
+                                        }>
+                                        <FrontPageIcon className='size-3 text-muted-foreground hover:text-foreground' />
                                     </BreadcrumbLink>
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator />
                                 <BreadcrumbItem>
-                                    <BreadcrumbLink asChild>
-                                        <Link
-                                            href='/work/'
-                                            title='View all Work'
-                                            className={cn(
-                                                typographyVariants({
-                                                    muted: true,
-                                                    variant: 'small'
-                                                })
-                                            )}>
-                                            Work
-                                        </Link>
+                                    <BreadcrumbLink
+                                        render={
+                                            <Link
+                                                href='/work/'
+                                                title='View all Work'
+                                            />
+                                        }
+                                        className={cn(
+                                            typographyVariants({
+                                                muted: true,
+                                                variant: 'small'
+                                            })
+                                        )}>
+                                        Work
                                     </BreadcrumbLink>
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator />

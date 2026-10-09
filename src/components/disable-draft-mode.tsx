@@ -1,19 +1,28 @@
 'use client'
-
-import { useDraftModeEnvironment } from 'next-sanity/hooks'
-import Link from 'next/link'
+/**
+ * SlinkyPixels : Disable Draft Mode
+ * @description Lets editors leave draft mode when previewing outside Presentation Tool.
+ */
+import { disableDraftMode } from '@/actions/disable-draft-mode'
+import { Button } from '@ui/button'
+import { useIsPresentationTool } from 'next-sanity/hooks'
+import { useTransition } from 'react'
 
 export const DisableDraftMode = () => {
-    const environment = useDraftModeEnvironment()
+    const [pending, startTransition] = useTransition()
+    const isPresentationTool = useIsPresentationTool()
 
-    // Only show the disable draft mode button when outside of Presentation Tool
-    if (environment !== 'live' && environment !== 'unknown') return null
+    // Hide while checking (null) and inside Presentation Tool (true)
+    if (isPresentationTool !== false) return null
 
     return (
-        <Link
-            href='/api/draft-mode/disable'
-            className='fixed right-2 bottom-2 rounded-sm bg-foreground p-2 text-xs font-bold text-background'>
-            Disable Draft Mode
-        </Link>
+        <Button
+            type='button'
+            size='sm'
+            disabled={pending}
+            onClick={() => startTransition(() => disableDraftMode())}
+            className='fixed right-2 bottom-2 z-50 bg-foreground font-bold text-background hover:bg-foreground/90'>
+            {pending ? 'Disabling…' : 'Disable Draft Mode'}
+        </Button>
     )
 }

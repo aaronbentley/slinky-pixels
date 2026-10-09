@@ -1,5 +1,4 @@
 'use client'
-import { cn } from '@/lib/utils'
 /**
  * SlinkyPixels : Mode Toggle
  */
@@ -7,64 +6,60 @@ import { Button } from '@ui/button'
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuItem,
     DropdownMenuLabel,
+    DropdownMenuRadioGroup,
+    DropdownMenuRadioItem,
     DropdownMenuTrigger
 } from '@ui/dropdown-menu'
+import { useTheme } from '@wrksz/themes/client'
 import { Moon, Sun } from 'lucide-react'
-import { useTheme } from 'next-themes'
+
+/**
+ * Create theme map
+ */
+const themeMap = {
+    light: 'Light',
+    dark: 'Dark',
+    system: 'System'
+}
 
 const ModeToggle = () => {
     /**
-     * Theme hook from next-themes
+     * Theme hook from @wrksz/themes
      */
     const { theme, setTheme } = useTheme()
 
-    /**
-     * Create theme map
-     */
-    const themeMap = {
-        light: 'Light',
-        dark: 'Dark',
-        system: 'System'
-    }
-
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button
-                    size='icon'
-                    variant='ghost'
-                    className='w-9 px-0'>
-                    <Sun className='size-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90' />
-                    <Moon className='absolute size-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0' />
-                    <span className='sr-only'>Toggle theme</span>
-                </Button>
+            <DropdownMenuTrigger
+                render={
+                    <Button
+                        size='icon'
+                        variant='ghost'
+                        className='w-9 px-0'
+                    />
+                }>
+                <Sun className='size-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90' />
+                <Moon className='absolute size-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0' />
+                <span className='sr-only'>Toggle theme</span>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align='end'>
-                <DropdownMenuLabel className='text-muted-foreground'>
-                    Theme
-                </DropdownMenuLabel>
-                {Object.entries(themeMap).map(([key, value]) => {
-                    // Check if the menu is active
-                    const active = theme === key
-                    return (
-                        <DropdownMenuItem
+            <DropdownMenuContent
+                align='end'
+                className='w-auto'>
+                <DropdownMenuRadioGroup
+                    value={theme ?? 'system'}
+                    onValueChange={(value) => setTheme(value)}>
+                    <DropdownMenuLabel>Theme</DropdownMenuLabel>
+                    {Object.entries(themeMap).map(([key, value]) => (
+                        <DropdownMenuRadioItem
                             key={key}
-                            onClick={() => setTheme(key)}
-                            className={cn(
-                                'font-medium',
-                                active && [
-                                    'text-background',
-                                    'bg-secondary',
-                                    'focus:text-background',
-                                    'focus:bg-secondary/90'
-                                ]
-                            )}>
+                            value={key}
+                            closeOnClick
+                            className='font-medium data-checked:bg-secondary data-checked:text-background data-checked:focus:bg-secondary/90 data-checked:focus:text-background'>
                             {value}
-                        </DropdownMenuItem>
-                    )
-                })}
+                        </DropdownMenuRadioItem>
+                    ))}
+                </DropdownMenuRadioGroup>
             </DropdownMenuContent>
         </DropdownMenu>
     )

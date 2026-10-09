@@ -16,6 +16,24 @@ export const locations = {
             ]
         })
     }),
+    work: defineLocations({
+        select: {
+            title: 'title',
+            slug: 'slug.current'
+        },
+        resolve: (doc) => ({
+            locations: [
+                {
+                    title: doc?.title || 'Untitled',
+                    href: `/work/${doc?.slug}/`
+                },
+                {
+                    title: 'Work',
+                    href: '/work/'
+                }
+            ]
+        })
+    }),
     post: defineLocations({
         select: {
             id: '_id',
