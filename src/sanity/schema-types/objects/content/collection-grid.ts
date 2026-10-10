@@ -47,6 +47,21 @@ export const CollectionGrid = defineType({
                 Rule.required().error(`Specify ${contentType} Type`)
         }),
         defineField({
+            name: 'layout',
+            title: 'Layout',
+            type: 'string',
+            description: `${contentType} Layout`,
+            options: {
+                list: [
+                    { title: 'Grid', value: 'grid' },
+                    { title: 'List', value: 'list' }
+                ],
+                layout: 'radio',
+                direction: 'horizontal'
+            },
+            initialValue: 'grid'
+        }),
+        defineField({
             name: 'limit',
             title: 'Limit',
             type: 'number',

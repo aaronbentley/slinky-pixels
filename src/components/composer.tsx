@@ -87,12 +87,18 @@ const Composer = ({
     documentId,
     documentType,
     path = 'content',
+    blockProps,
     className
 }: {
     content: ContentType | null
     documentId: string
     documentType: string
     path?: string
+    /**
+     * Extra props for specific blocks, keyed by block `_key`. Lets a route
+     * hand document-level data (e.g. a work item's details) to a CMS block
+     */
+    blockProps?: Record<string, Record<string, unknown>>
     className?: string
 }) => {
     /**
@@ -127,6 +133,7 @@ const Composer = ({
                         type={_type}
                         order={index}
                         {...rest}
+                        {...blockProps?.[_key]}
                     />
                 ))}
         </main>

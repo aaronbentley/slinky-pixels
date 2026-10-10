@@ -8,6 +8,7 @@ import { Typography } from '@/components/typography'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '@ui/button'
 import { ThemeProvider } from '@wrksz/themes/next'
+import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
 import type { Metadata } from 'next'
 import Link from 'next/link'
@@ -29,7 +30,7 @@ const NotFound = () => (
         lang='en'
         data-scroll-behavior='smooth'
         suppressHydrationWarning>
-        <body className={GeistSans.variable}>
+        <body className={cn(GeistSans.variable, GeistMono.variable)}>
             <ThemeProvider
                 attribute='data-theme'
                 defaultTheme='system'

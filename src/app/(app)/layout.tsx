@@ -4,12 +4,15 @@
 import { refreshAction } from '@/actions/refresh'
 import '@/assets/styles/globals.css'
 import { DisableDraftMode } from '@/components/disable-draft-mode'
+import MotionProvider from '@/components/motion-provider'
 import TailwindIndicator from '@/components/tailwind-indicator'
+import { cn } from '@/lib/utils'
 import { SanityLive } from '@/sanity/lib/live'
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@wrksz/themes/next'
+import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { VisualEditing } from 'next-sanity/visual-editing'
 import { draftMode } from 'next/headers'
 
@@ -35,6 +38,16 @@ export const metadata: Metadata = {
     }
 }
 
+/**
+ * Browser UI colour, matching the light & dark theme backgrounds
+ */
+export const viewport: Viewport = {
+    themeColor: [
+        { media: '(prefers-color-scheme: light)', color: '#fafafa' },
+        { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' }
+    ]
+}
+
 const AppLayout = async ({
     children
 }: Readonly<{
@@ -47,14 +60,14 @@ const AppLayout = async ({
             lang='en'
             data-scroll-behavior='smooth'
             suppressHydrationWarning>
-            <body className={GeistSans.variable}>
+            <body className={cn(GeistSans.variable, GeistMono.variable)}>
                 <ThemeProvider
                     attribute='data-theme'
                     defaultTheme='system'
                     enableSystem
                     disableTransitionOnChange
                     enableColorScheme>
-                    {children}
+                    <MotionProvider>{children}</MotionProvider>
                     <TailwindIndicator />
                     <SanityLive
                         includeDrafts={isDraftMode}

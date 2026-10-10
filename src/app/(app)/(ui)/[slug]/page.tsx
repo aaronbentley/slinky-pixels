@@ -2,21 +2,17 @@
  * SlinkyPixels : /[slug]/ - Page
  */
 import Composer from '@/components/composer'
-import { FrontPageIcon } from '@/components/icons'
-import Image from '@/components/image'
-import Link from '@/components/link'
-import { Typography } from '@/components/typography'
-import { sanityFetch } from '@/sanity/lib/live'
-import { PAGE_PATHS_QUERY, PAGE_QUERY } from '@/sanity/lib/queries'
+import PageCover from '@/components/page-cover'
+import PageHero from '@/components/page-hero'
 import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator
-} from '@ui/breadcrumb'
-import { Separator } from '@ui/separator'
+    getMenuPosition,
+    resolveDocumentReferenceURL,
+    resolveMenuLinks
+} from '@/lib/helpers'
+import { buildMetadata } from '@/lib/metadata'
+import { sanityFetch } from '@/sanity/lib/live'
+import { MENU_QUERY, PAGE_PATHS_QUERY, PAGE_QUERY } from '@/sanity/lib/queries'
+import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 export const generateStaticParams = async () => {
@@ -31,10 +27,13 @@ export const generateStaticParams = async () => {
     }))
 }
 
-export const generateMetadata = async ({ params }: PageProps<'/[slug]'>) => {
+export const generateMetadata = async ({
+    params
+}: PageProps<'/[slug]'>): Promise<Metadata> => {
+    const { slug } = await params
     const { data: page } = await sanityFetch({
         query: PAGE_QUERY,
-        params: await params,
+        params: { slug },
         stega: false
     })
 
@@ -43,79 +42,59 @@ export const generateMetadata = async ({ params }: PageProps<'/[slug]'>) => {
      */
     if (!page) notFound()
 
-    return {
-        title: page.title
-    }
+    return buildMetadata({
+        title: page.seo?.seoTitle ?? page.title,
+        description: page.seo?.seoDescription ?? page.subtitle,
+        path: `/${slug}/`
+    })
 }
 
 const Page = async ({ params }: PageProps<'/[slug]'>) => {
-    const { data: page } = await sanityFetch({
-        query: PAGE_QUERY,
-        params: await params
-    })
+    const [{ data: page }, { data: menu }] = await Promise.all([
+        sanityFetch({
+            query: PAGE_QUERY,
+            params: await params
+        }),
+        sanityFetch({
+            query: MENU_QUERY,
+            params: { title: 'Nav Menu' }
+        })
+    ])
 
     /**
      * Bail if no page found
      */
     if (!page) notFound()
 
+    /**
+     * Page position in the menu for the eyebrow, e.g. "01 — About"
+     */
+    const position = page.slug?.current
+        ? getMenuPosition(
+              resolveMenuLinks(menu?.links),
+              resolveDocumentReferenceURL(page._type, page.slug)
+          )
+        : null
+
     return (
         <>
-            <div className='container mx-auto flex flex-col items-start gap-2 py-16 md:py-20 lg:max-w-[980px]'>
-                <div className='flex w-full flex-col items-center gap-6 md:flex-row-reverse md:justify-between'>
-                    {page.image && (
-                        <Image
-                            image={page.image}
-                            alt={page.title}
-                            priority
-                            width={200}
-                            height={200}
-                            className='aspect-square rounded-full object-cover'
-                        />
-                    )}
-                    <div className='flex flex-col items-center gap-4 md:items-start'>
-                        <Breadcrumb>
-                            <BreadcrumbList>
-                                <BreadcrumbItem>
-                                    <BreadcrumbLink
-                                        render={
-                                            <Link
-                                                href='/'
-                                                title='Go to Frontpage'
-                                                aria-label='Go to Frontpage'
-                                            />
-                                        }>
-                                        <FrontPageIcon className='size-3 text-muted-foreground hover:text-foreground' />
-                                    </BreadcrumbLink>
-                                </BreadcrumbItem>
-                                <BreadcrumbSeparator />
-                                <BreadcrumbItem>
-                                    <BreadcrumbPage>
-                                        {page.title}
-                                    </BreadcrumbPage>
-                                </BreadcrumbItem>
-                            </BreadcrumbList>
-                        </Breadcrumb>
-                        <Typography
-                            variant='h1'
-                            className='text-center md:text-start'>
-                            {page.title}
-                        </Typography>
-                        <Typography
-                            variant='p'
-                            as='span'
-                            className='text-center text-balance md:text-start'
-                            muted>
-                            {page.subtitle}
-                        </Typography>
-                    </div>
-                </div>
-                <Separator className='mt-6 md:mt-12' />
-            </div>
+            <PageHero
+                eyebrow={
+                    position ? `${position.n} — ${position.label}` : undefined
+                }
+                title={page.title}
+                subtitle={page.subtitle}
+                bordered={!page.image?.asset}
+            />
+            <PageCover
+                image={page.image}
+                alt={page.title}
+            />
             <Composer
                 content={page.content}
                 documentId={page._id}
                 documentType={page._type}
+                className='w-full gap-y-24 pt-18 pb-8'
             />
         </>
     )

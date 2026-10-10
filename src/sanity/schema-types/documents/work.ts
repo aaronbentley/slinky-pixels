@@ -56,6 +56,13 @@ export const Work = defineType({
             }
         }),
         defineField({
+            name: 'date',
+            title: 'Date',
+            type: 'date',
+            description: `${documentType} date, used to order Recent Work`,
+            group: 'content'
+        }),
+        defineField({
             name: 'url',
             title: 'URL',
             type: 'url',

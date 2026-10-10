@@ -21,6 +21,30 @@ export const headingBaseClasses = [
 ]
 export const proseBaseClasses = ['text-lg', 'tracking-tight']
 
+/**
+ * Brand gradient text, used for titles, the wordmark & body links
+ */
+export const gradientTextClasses = [
+    'bg-linear-125',
+    'from-primary',
+    'via-secondary',
+    'to-tertiary',
+    'bg-clip-text',
+    'text-transparent'
+]
+
+/**
+ * Links in body text - gradient text with a gradient underline, see the
+ * `gradient-link` utility in globals.css. The text colour classes override
+ * the Link component's defaults
+ */
+export const gradientLinkClasses = [
+    'gradient-link',
+    'font-medium',
+    'text-transparent',
+    'hover:text-transparent'
+]
+
 const typographyVariants = cva([], {
     variants: {
         variant: {
@@ -102,6 +126,18 @@ const typographyVariants = cva([], {
             ol: ['list-decimal', 'list-inside', 'ps-4', 'space-y-2', 'my-2'],
             li: [...proseBaseClasses],
             small: ['text-sm'],
+            /**
+             * Mono UI text - section labels & page eyebrows
+             */
+            label: [
+                'font-mono',
+                'text-xs',
+                'font-medium',
+                'uppercase',
+                'tracking-widest',
+                'text-muted-foreground'
+            ],
+            eyebrow: ['font-mono', 'text-[13px]', 'text-muted-foreground'],
             address: [...proseBaseClasses, 'not-italic!', 'max-w-xs'],
             /**
              * Inline marks - inherit size, font and colour from their parent
@@ -234,6 +270,8 @@ const variantElementMap: Record<
     ol: 'ol',
     li: 'li',
     small: 'small',
+    label: 'span',
+    eyebrow: 'span',
     address: 'address',
     em: 'em',
     strong: 'strong',

@@ -1,4 +1,5 @@
 import {
+    Blend,
     Copyright,
     ExternalLink,
     File,
@@ -6,6 +7,7 @@ import {
     Grid3X3,
     House,
     Images,
+    LayoutList,
     Layers,
     ListVideo,
     Menu,
@@ -33,6 +35,10 @@ export const SettingsIcon = SlidersHorizontal
 export const BodyIcon = Text
 
 export const CollectionGridIcon = Grid3X3
+
+export const GradientIcon = Blend
+
+export const DetailsIcon = LayoutList
 
 export const ImagesIcon = Images
 

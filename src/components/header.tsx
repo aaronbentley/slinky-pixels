@@ -1,9 +1,13 @@
 /**
  * SlinkyPixels : Header
  */
+import ColorStrip from '@/components/color-strip'
 import ModeToggle from '@/components/mode-toggle'
 import Nav from '@/components/nav'
-import { headingBaseClasses } from '@/components/typography'
+import {
+    gradientTextClasses,
+    headingBaseClasses
+} from '@/components/typography'
 import { cn } from '@/lib/utils'
 import { sanityFetch } from '@/sanity/lib/live'
 import { MENU_QUERY } from '@/sanity/lib/queries'
@@ -19,45 +23,37 @@ const Header = async () => {
     })
 
     return (
-        <header className='sticky top-0 z-50 w-full border-b border-muted bg-background'>
-            <div className='container flex items-center'>
-                <div className='flex w-full justify-between py-4'>
-                    <Nav menu={menu} />
-                    {/* <MobileNav menu={menu} /> */}
-                    <Link
-                        href='/'
-                        className={cn([
-                            headingBaseClasses,
-                            'text-xl',
-                            'text-transparent',
-                            'bg-linear-125',
-                            'from-primary',
-                            'via-secondary',
-                            'to-tertiary',
-                            'bg-clip-text',
-                            'transition',
-                            'origin-top',
-                            'duration-200',
-                            'hover:scale-110',
-                            'hover:text-transparent',
-                            'hover:from-primary-foreground',
-                            'hover:via-secondary-foreground',
-                            'hover:to-tertiary-foreground',
-                            'dark:hover:text-transparent',
-                            'dark:hover:from-primary-foreground',
-                            'dark:hover:via-secondary-foreground',
-                            'dark:hover:to-tertiary-foreground',
-                            'tracking-tighter',
-                            'backdrop-blur-lg',
-                            'pe-px'
-                        ])}>
-                        {process.env.APP_TITLE!}
-                    </Link>
-                    <ModeToggle />
+        <header className='sticky top-0 z-50 w-full border-b bg-background'>
+            <ColorStrip />
+            <div className='mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-4 px-8 py-3.5'>
+                <Link
+                    href='/'
+                    className={cn([
+                        headingBaseClasses,
+                        gradientTextClasses,
+                        'text-xl',
+                        'transition',
+                        'origin-left',
+                        'duration-200',
+                        'hover:scale-110',
+                        'hover:text-transparent',
+                        'hover:from-primary-foreground',
+                        'hover:via-secondary-foreground',
+                        'hover:to-tertiary-foreground',
+                        'dark:hover:text-transparent',
+                        'dark:hover:from-primary-foreground',
+                        'dark:hover:via-secondary-foreground',
+                        'dark:hover:to-tertiary-foreground',
+                        'tracking-tighter',
+                        'pe-px'
+                    ])}>
+                    {process.env.APP_TITLE!}
+                </Link>
+                <div className='flex items-center gap-1'>
+                    <Nav menu={menu}>
+                        <ModeToggle />
+                    </Nav>
                 </div>
-                {/* <div className='flex items-center md:space-x-4'>
-                    <ModeToggle />
-                </div> */}
             </div>
         </header>
     )

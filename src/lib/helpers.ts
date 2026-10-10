@@ -104,3 +104,88 @@ export const prettifyUrl = (url: string) => {
         .replace(/(^\w+:|^)\/\//, '') // Remove protocol
         .replace(/\/$/, '') // Remove trailing slash
 }
+
+/**
+ * Slugify text for use as an element id / URL hash
+ */
+export const slugify = (text: string) =>
+    text
+        .normalize('NFKD')
+        .replace(/[̀-ͯ]/g, '') // Remove accents
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, '-') // Collapse non-alphanumerics to hyphens
+        .replace(/^-+|-+$/g, '') // Trim leading & trailing hyphens
+
+/**
+ * Pad a number to two digits, e.g. 1 → '01'
+ */
+export const padNumber = (n: number) => String(n).padStart(2, '0')
+
+/**
+ * Resolve menu links into valid { href, label } items, skipping incomplete links
+ */
+export const resolveMenuLinks = (
+    links:
+        | {
+              _key: string
+              label?: string | null
+              customUrl?: boolean | null
+              destinationRef?: {
+                  _type: string
+                  title: string
+                  slug: { current: string }
+              } | null
+              destinationHref?: string | null
+              blank?: boolean | null
+          }[]
+        | null
+        | undefined
+) =>
+    (links ?? []).flatMap(
+        ({
+            _key,
+            label,
+            customUrl,
+            destinationRef,
+            destinationHref,
+            blank
+        }) => {
+            /**
+             * Verify link properties
+             */
+            if (!label || !destinationRef || (customUrl && !destinationHref))
+                return []
+
+            /**
+             * Resolve menu item URL
+             */
+            const href = resolveLinkURL({
+                customUrl: customUrl ?? undefined,
+                destinationRef: destinationRef ?? undefined,
+                destinationHref: destinationHref ?? undefined
+            })
+
+            return [{ _key, label, href, blank: blank ?? false }]
+        }
+    )
+
+/**
+ * Whether a path is the link's page or nested below it (e.g. /work/x → /work/)
+ */
+export const isActivePath = (pathname: string, href: string) =>
+    pathname === href || (href !== '/' && pathname.startsWith(href))
+
+/**
+ * A page's position in the menu, e.g. { n: '01', label: 'About' }
+ */
+export const getMenuPosition = (
+    links: ReturnType<typeof resolveMenuLinks>,
+    href: string
+) => {
+    const index = links.findIndex((link) => link.href === href)
+
+    return index === -1
+        ? null
+        : { n: padNumber(index + 1), label: links[index].label }
+}

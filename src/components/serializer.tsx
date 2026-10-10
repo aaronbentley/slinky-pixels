@@ -2,7 +2,11 @@
  * SlinkyPixels : Portable Text Serializer
  */
 import Link from '@/components/link'
-import { Typography, TypographyProps } from '@/components/typography'
+import {
+    gradientLinkClasses,
+    Typography,
+    TypographyProps
+} from '@/components/typography'
 import { resolveLinkURL } from '@/lib/helpers'
 import { cn } from '@/lib/utils'
 import {
@@ -107,20 +111,7 @@ const baseSerializer: Partial<PortableTextReactComponents> = {
                     href={href}
                     title={title}
                     target={blank ? '_blank' : '_self'}
-                    className={cn([
-                        'text-transparent',
-                        'bg-linear-125',
-                        'from-primary',
-                        'via-secondary',
-                        'to-tertiary',
-                        'bg-clip-text',
-                        'transition',
-                        'duration-200',
-                        'hover:text-transparent',
-                        'hover:from-primary-foreground',
-                        'hover:via-secondary-foreground',
-                        'hover:to-tertiary-foreground'
-                    ])}>
+                    className={cn(gradientLinkClasses)}>
                     {children}
                 </Link>
             )

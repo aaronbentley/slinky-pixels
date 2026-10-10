@@ -10,9 +10,13 @@ const UiLayout = async ({
     children: React.ReactNode
 }>) => {
     return (
-        <div className='flex min-h-dvh flex-col'>
+        /**
+         * `isolate` lets page backgrounds (e.g. the slinky) sit at -z-10 behind
+         * content, `overflow-clip` contains them without breaking sticky header
+         */
+        <div className='relative isolate flex min-h-dvh flex-col overflow-clip'>
             <Header />
-            <div className='flex flex-1 flex-col items-center justify-start gap-y-4 md:gap-y-12'>
+            <div className='flex flex-1 flex-col items-center justify-start pb-16'>
                 {children}
             </div>
             <Footer />

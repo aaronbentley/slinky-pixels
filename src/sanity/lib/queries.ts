@@ -22,13 +22,22 @@ const imageAssetReference = `
     }
 `
 
+const seo = `
+    seo {
+        seoTitle,
+        seoDescription
+    }
+`
+
 /**
  * Content type [Block] fragment
  */
 const frontpage = `
     _type == 'frontpage' => {
         title,
-        content,
+        eyebrow,
+        headline,
+        intro,
         buttons[] {
             _key,
             label,
@@ -40,7 +49,21 @@ const frontpage = `
                 ${slug}
             },
             blank
-        }
+        },
+        showRecentWork,
+        recentWorkCount,
+        'recentWork': select(
+            showRecentWork != false => *[
+                _type == 'work' &&
+                defined(slug.current)
+            ] | order(coalesce(date, _createdAt) desc)[0...10] {
+                _id,
+                _type,
+                title,
+                ${slug}
+            },
+            []
+        )
     }
 `
 
@@ -73,6 +96,7 @@ const collectionGrid = `
                 title,
                 subtitle,
                 excerpt,
+                uses,
                 ${slug},
                 ${imageAssetReference}
             },
@@ -82,6 +106,7 @@ const collectionGrid = `
                 title,
                 subtitle,
                 excerpt,
+                uses,
                 ${slug},
                 ${imageAssetReference}
             }|order(title asc),
@@ -150,8 +175,10 @@ export const PAGE_QUERY = defineQuery(`
         _type,
         title,
         subtitle,
+        ${slug},
         ${content},
-        ${imageAssetReference}
+        ${imageAssetReference},
+        ${seo}
     }
 `)
 
@@ -228,7 +255,17 @@ export const WORK_QUERY = defineQuery(`
         url,
         uses,
         ${content},
-        ${imageAssetReference}
+        ${imageAssetReference},
+        ${seo},
+        'collection': *[
+            _type == 'page' &&
+            slug.current == 'work'
+        ][0].content[_type == 'collectionGrid'][0].customContent[]-> {
+            _id,
+            _type,
+            title,
+            ${slug}
+        }
     }
 `)
 

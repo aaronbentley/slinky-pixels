@@ -13820,6 +13820,7 @@ __metadata:
     eslint-config-prettier: "npm:^10.1.8"
     geist: "npm:^1.7.2"
     lucide-react: "npm:^1.52.0"
+    motion: "npm:^14.0.0"
     next: "npm:16.4.0"
     next-sanity: "npm:^13.3.4"
     postcss: "npm:^8.5.29"

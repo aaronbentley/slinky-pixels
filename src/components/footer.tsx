@@ -19,8 +19,11 @@ const Footer = async () => {
     const socialLinks = settings?.socialLinks || []
 
     return (
-        <footer className='container mt-16 flex flex-col items-center gap-y-6 border-t py-8 md:flex-row md:items-start md:justify-between'>
-            <SocialLinks socialLinks={socialLinks} />
+        <footer className='mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-x-6 gap-y-4 border-t px-8 py-8'>
+            <SocialLinks
+                socialLinks={socialLinks}
+                className='flex-wrap justify-start'
+            />
             <div className='flex flex-row items-center justify-center gap-1.5'>
                 <CopyrightIcon className='size-4 stroke-[1.5] text-muted-foreground' />
                 <Typography

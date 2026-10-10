@@ -29,6 +29,13 @@ export const Body = defineType({
             description: `${contentType} Content`,
             validation: (Rule) =>
                 Rule.required().error(`Specify ${contentType} Content`)
+        }),
+        defineField({
+            name: 'details',
+            title: 'Details',
+            type: 'details',
+            description:
+                'Optional, shown in a side column alongside the Content'
         })
     ],
     preview: {

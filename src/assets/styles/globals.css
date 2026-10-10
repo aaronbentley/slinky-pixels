@@ -85,6 +85,7 @@
 
 @theme inline {
     --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
 
     --radius-sm: calc(var(--radius) * 0.6);
     --radius-md: calc(var(--radius) * 0.8);
@@ -129,6 +130,62 @@
 @utility container {
     margin-inline: auto;
     padding-inline: 2rem;
+}
+
+/**
+ * Links in body text: gradient text with a gradient underline. Text
+ * decoration can't take a gradient, so the underline is a second background
+ * layer, clipped to the border box while the first is clipped to the text.
+ */
+@utility gradient-link {
+    background-image:
+        linear-gradient(
+            125deg,
+            var(--primary),
+            var(--secondary),
+            var(--tertiary)
+        ),
+        linear-gradient(
+            90deg,
+            var(--primary),
+            var(--secondary),
+            var(--tertiary)
+        );
+    background-size:
+        100% 100%,
+        100% 1.5px;
+    background-position:
+        0 0,
+        0 100%;
+    background-repeat: no-repeat;
+    -webkit-background-clip: text, border-box;
+    background-clip: text, border-box;
+    color: transparent;
+    transition: background-size 200ms;
+
+    &:hover {
+        background-size:
+            100% 100%,
+            100% 2px;
+    }
+}
+
+/**
+ * Brand gradient behind an element's border. `border-image` ignores border
+ * radius, so the gradient is a background painted under the border instead,
+ * with a transparent border to reveal it. Apply it with the transparent border
+ * (e.g. both on hover), as the dark theme's translucent border lets it show
+ * through. For elements whose content covers the padding box, such as images
+ */
+@utility gradient-border {
+    background-image: linear-gradient(
+        125deg,
+        var(--primary),
+        var(--secondary),
+        var(--tertiary)
+    );
+    background-origin: border-box;
+    background-clip: border-box;
 }
 
 @layer base {
