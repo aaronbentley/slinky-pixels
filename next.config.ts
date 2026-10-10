@@ -17,6 +17,11 @@ const nextConfig: NextConfig = {
             fullUrl: false
         }
     },
+    compiler: {
+        removeConsole: {
+            exclude: ['error']
+        }
+    },
     experimental: {
         globalNotFound: true,
         esmExternals: true
