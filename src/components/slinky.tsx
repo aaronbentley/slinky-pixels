@@ -36,17 +36,18 @@ const PRESETS = {
         coil: 'top-[64%] left-1/2 w-[max(100%,900px)] -translate-x-1/2'
     },
     hero: {
-        rings: 12,
+        rings: 18,
         perRing: 14,
         radiusX: 18,
         radiusY: 56,
-        arch: 110,
+        arch: 150,
         frontSize: 8,
         backSize: 5,
         wave: 16,
-        wavesAlong: 1,
-        // 12 rings × 2.4vw, but never narrower than 320px
-        coil: 'top-[66%] left-[60%] w-[max(28.8vw,320px)]'
+        wavesAlong: 1.5,
+        // 18 rings × 2.4vw, but never narrower than 480px. Anchored by its
+        // right edge, which sits where a 12-ring coil at left-[60%] ended
+        coil: 'top-[66%] right-[calc(40%-max(28.8vw,320px))] w-[max(43.2vw,480px)]'
     }
 } as const
 
@@ -153,7 +154,12 @@ const Slinky = ({
                 '[--slinky-unit:clamp(1px,100vw/1440,2px)]',
                 className
             )}>
-            <div className={cn('absolute', PRESETS[preset].coil)}>
+            <div
+                className={cn(
+                    'absolute',
+                    // 'blur-[calc(3*var(--slinky-unit))]',
+                    PRESETS[preset].coil
+                )}>
                 {PIXELS[preset].map(({ key, front, style }) => (
                     <span
                         key={key}
