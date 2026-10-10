@@ -20,23 +20,23 @@ import { useState } from 'react'
 
 const AlbumGallery = ({ images }: { images: ImageProps['image'][] }) => {
     /**
-     * Open image index (null when closed) & the direction of the last move,
-     * which sets the side the next image slides in from
+     * Open state, the shown image & the direction of the last move, which
+     * sets the side the next image slides in from. The index outlives `open`
+     * so the image stays put while the lightbox animates out
      */
-    const [index, setIndex] = useState<number | null>(null)
+    const [open, setOpen] = useState(false)
+    const [index, setIndex] = useState(0)
     const [direction, setDirection] = useState<1 | -1>(1)
 
     const count = images.length
-    const image = index !== null ? images[index] : null
+    const image = images[index]
 
     /**
      * Move by one image, wrapping at either end
      */
     const page = (step: 1 | -1) => {
         setDirection(step)
-        setIndex((current) =>
-            current === null ? current : (current + step + count) % count
-        )
+        setIndex((current) => (current + step + count) % count)
     }
 
     return (
@@ -51,6 +51,7 @@ const AlbumGallery = ({ images }: { images: ImageProps['image'][] }) => {
                             onClick={() => {
                                 setDirection(1)
                                 setIndex(itemIndex)
+                                setOpen(true)
                             }}
                             className='group block cursor-zoom-in rounded-xl outline-none focus-visible:ring-3 focus-visible:ring-ring/50'>
                             <Image
@@ -77,8 +78,8 @@ const AlbumGallery = ({ images }: { images: ImageProps['image'][] }) => {
             </div>
 
             <Dialog
-                open={index !== null}
-                onOpenChange={(open) => !open && setIndex(null)}>
+                open={open}
+                onOpenChange={setOpen}>
                 <DialogContent
                     className='min-w-[90%] xl:min-w-[85%] 2xl:min-w-[70%]'
                     onKeyDown={(event) => {
@@ -91,7 +92,7 @@ const AlbumGallery = ({ images }: { images: ImageProps['image'][] }) => {
                             page(1)
                         }
                     }}>
-                    {image && index !== null && (
+                    {image && (
                         <>
                             <DialogHeader className='pe-8'>
                                 <DialogTitle>
