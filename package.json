@@ -58,5 +58,16 @@
     "engines": {
         "node": ">=22.12"
     },
-    "packageManager": "yarn@4.18.1"
+    "packageManager": "yarn@4.18.1",
+    "browserslist": {
+        "production": [
+            "last 2 Chrome versions",
+            "last 2 Firefox versions",
+            "last 2 Edge versions",
+            "last 2 Safari versions"
+        ],
+        "development": [
+            "last 1 Chrome version"
+        ]
+    }
 }

@@ -18,7 +18,8 @@ const nextConfig: NextConfig = {
         }
     },
     experimental: {
-        globalNotFound: true
+        globalNotFound: true,
+        esmExternals: true
     }
 }
 
