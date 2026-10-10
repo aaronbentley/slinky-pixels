@@ -58,7 +58,7 @@ const AlbumGallery = ({ images }: { images: ImageProps['image'][] }) => {
                                 alt={item.alt}
                                 width={640}
                                 height={360}
-                                className='aspect-video w-full rounded-xl border-2 object-cover group-hover:gradient-border group-hover:border-transparent group-focus-visible:gradient-border group-focus-visible:border-transparent'
+                                className='aspect-video w-full rounded-xl border-2 object-cover group-hover:border-transparent group-hover:gradient-border group-focus-visible:border-transparent group-focus-visible:gradient-border'
                             />
                             <span className='sr-only'>
                                 View {item.alt || 'image'} full size

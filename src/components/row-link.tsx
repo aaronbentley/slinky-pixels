@@ -1,7 +1,7 @@
 /**
  * SlinkyPixels : Row Link
  * A full-width list row link. On hover the row tints, its inline padding grows
- * and the arrow turns secondary & nudges in its direction.
+ * and the arrow turns to the brand gradient & nudges in its direction.
  */
 import Link from '@/components/link'
 import { cn } from '@/lib/utils'
@@ -79,8 +79,9 @@ const RowLink = ({
                             'text-muted-foreground',
                             'transition',
                             'duration-200',
-                            'group-hover:text-secondary',
-                            'group-focus-visible:text-secondary'
+                            // Brand gradient stroke, see IconGradient
+                            'group-hover:stroke-[url(#icon-gradient-arrow)]',
+                            'group-focus-visible:stroke-[url(#icon-gradient-arrow)]'
                         ],
                         classes,
                         arrowClassName

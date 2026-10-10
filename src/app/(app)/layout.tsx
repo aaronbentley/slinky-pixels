@@ -4,6 +4,7 @@
 import { refreshAction } from '@/actions/refresh'
 import '@/assets/styles/globals.css'
 import { DisableDraftMode } from '@/components/disable-draft-mode'
+import IconGradient from '@/components/icon-gradient'
 import MotionProvider from '@/components/motion-provider'
 import TailwindIndicator from '@/components/tailwind-indicator'
 import { cn } from '@/lib/utils'
@@ -67,6 +68,7 @@ const AppLayout = async ({
                     enableSystem
                     disableTransitionOnChange
                     enableColorScheme>
+                    <IconGradient />
                     <MotionProvider>{children}</MotionProvider>
                     <TailwindIndicator />
                     <SanityLive

@@ -1,13 +1,10 @@
 /**
  * SlinkyPixels : Content : Frontpage
  */
+import GradientShift from '@/components/gradient-shift'
 import Marker from '@/components/marker'
 import RowLink from '@/components/row-link'
-import {
-    gradientTextClasses,
-    headingBaseClasses,
-    Typography
-} from '@/components/typography'
+import { headingBaseClasses, Typography } from '@/components/typography'
 import {
     padNumber,
     resolveDocumentReferenceURL,
@@ -31,7 +28,7 @@ const headlineComponents: PortableTextComponents = {
     },
     marks: {
         gradient: ({ children }) => (
-            <span className={cn('pe-1', gradientTextClasses)}>{children}</span>
+            <GradientShift className='pe-1'>{children}</GradientShift>
         )
     }
 }

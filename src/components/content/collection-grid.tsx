@@ -138,7 +138,7 @@ const CollectionGrid = async ({
                                         alt={item.title}
                                         width={360}
                                         height={203}
-                                        className='aspect-video max-w-90 min-w-0 flex-[1_1_280px] rounded-xl border object-cover transition-colors duration-200 group-hover:border-secondary'
+                                        className='aspect-video max-w-90 min-w-0 flex-[1_1_280px] rounded-xl border-2 object-cover group-hover:border-transparent group-hover:gradient-border group-focus-visible:border-transparent group-focus-visible:gradient-border'
                                     />
                                 )}
                             </RowLink>

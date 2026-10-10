@@ -4,6 +4,7 @@
 import '@/assets/styles/globals.css'
 import Footer from '@/components/footer'
 import Header from '@/components/header'
+import IconGradient from '@/components/icon-gradient'
 import { Typography } from '@/components/typography'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '@ui/button'
@@ -37,6 +38,7 @@ const NotFound = () => (
                 enableSystem
                 disableTransitionOnChange
                 enableColorScheme>
+                <IconGradient />
                 <div className='flex min-h-dvh flex-col'>
                     <Header />
                     <div className='flex flex-1 flex-col items-center justify-center gap-y-4 md:gap-y-8'>
