@@ -3,12 +3,9 @@
  * Shared sub-page heading: an eyebrow (or breadcrumb), the gradient title,
  * the subtitle & optional actions, with the compact slinky behind it.
  */
+import GradientShift from '@/components/gradient-shift'
 import Slinky from '@/components/slinky'
-import {
-    gradientTextClasses,
-    headingBaseClasses,
-    Typography
-} from '@/components/typography'
+import { headingBaseClasses, Typography } from '@/components/typography'
 import { fadeUp, rise, stagger } from '@/lib/motion'
 import { cn } from '@/lib/utils'
 import * as motion from 'motion/react-client'
@@ -52,13 +49,16 @@ const PageHero = ({
                 variants={rise}
                 className={cn(
                     headingBaseClasses,
-                    gradientTextClasses,
-                    // Shrink to the text so short titles still show all three colours,
-                    // padded so bg-clip-text doesn't clip descenders & the last letter
-                    'self-start pe-1.5 pb-2',
+                    // Shrink to the text so short titles still show all three colours
+                    'self-start',
                     'text-[clamp(3rem,6vw,5.5rem)]/[0.95] tracking-[-0.06em]'
                 )}>
-                {title}
+                {/* Block so the gradient spans the whole title rather than
+                    each line, padded so bg-clip-text doesn't clip descenders
+                    & the last letter */}
+                <GradientShift className='block pe-1.5 pb-2'>
+                    {title}
+                </GradientShift>
             </motion.h1>
             {subtitle && (
                 <motion.div variants={fadeUp}>
