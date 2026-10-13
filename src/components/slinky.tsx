@@ -9,7 +9,7 @@
  *
  * Presets:
  *   - 'home' : full-width background behind the homepage
- *   - 'hero' : compact coil behind sub-page heroes
+ *   - 'hero' : shorter, full-width coil behind sub-page heroes
  *
  * Sizes are in units at the 1440px design width. `--slinky-unit` scales them
  * with the viewport (1px at 1440px, up to 2px) so the coil keeps its shape
@@ -36,7 +36,7 @@ const PRESETS = {
         coil: 'top-[64%] left-1/2 w-[max(100%,900px)] -translate-x-1/2'
     },
     hero: {
-        rings: 18,
+        rings: 40,
         perRing: 14,
         radiusX: 18,
         radiusY: 56,
@@ -44,10 +44,9 @@ const PRESETS = {
         frontSize: 8,
         backSize: 5,
         wave: 16,
-        wavesAlong: 1.5,
-        // 18 rings × 2.4vw, but never narrower than 480px. Anchored by its
-        // right edge, which sits where a 12-ring coil at left-[60%] ended
-        coil: 'top-[66%] right-[calc(40%-max(28.8vw,320px))] w-[max(43.2vw,480px)]'
+        wavesAlong: 2.5,
+        // Full width (~2.5vw a ring), but never narrower than 900px
+        coil: 'top-[66%] left-1/2 w-[max(100%,900px)] -translate-x-1/2'
     }
 } as const
 
