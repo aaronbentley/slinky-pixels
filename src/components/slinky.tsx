@@ -58,7 +58,7 @@ type Preset = keyof typeof PRESETS
  * How the coil flexes, tuned in the Slinky Motion Lab playground
  */
 const MOTION = {
-    cycle: 7.5, // s - one full wave
+    cycle: 8.5, // s - one full wave
     squash: 0.7, // loops bunch & spread, 0 - 1 of the most before they cross
     lean: 1, // loops tilt with the coil, 1 = square to it
     layer: 0.7 // height of the second, slower wave, relative to the first
