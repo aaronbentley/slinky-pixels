@@ -205,8 +205,7 @@ const Work = async ({ params }: PageProps<'/work/[slug]'>) => {
                             next._type,
                             next.slug
                         )}
-                        arrow='right'
-                        arrowClassName='size-7 group-hover:translate-x-1.5 group-focus-visible:translate-x-1.5'
+                        arrowClassName='size-7 group-hover:translate-x-1.25 group-hover:-translate-y-1.25 group-focus-visible:translate-x-1.25 group-focus-visible:-translate-y-1.25'
                         className='flex-wrap justify-between gap-x-6 gap-y-3 border-t border-b border-t-foreground py-7 hover:px-4 focus-visible:px-4'>
                         <span className='flex flex-col gap-2'>
                             <Typography variant='label'>

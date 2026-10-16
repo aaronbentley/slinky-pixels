@@ -187,7 +187,6 @@ const Frontpage = ({
                                     <RowLink
                                         href={href}
                                         target={blank ? '_blank' : '_self'}
-                                        arrow='right'
                                         className='min-h-16 gap-4'>
                                         <span className='w-6 font-mono text-xs text-muted-foreground'>
                                             {padNumber(index + 1)}
@@ -223,7 +222,6 @@ const Frontpage = ({
                                             work._type,
                                             work.slug
                                         )}
-                                        arrow='up-right'
                                         arrowClassName='size-4'
                                         className='min-h-12 gap-3'>
                                         <Marker index={index} />

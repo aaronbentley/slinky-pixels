@@ -110,7 +110,6 @@ const CollectionGrid = async ({
                                     item._type,
                                     item.slug
                                 )}
-                                arrow='up-right'
                                 arrowClassName='size-5.5'
                                 className='flex-wrap gap-x-10 gap-y-5 py-7 hover:px-4 focus-visible:px-4'>
                                 <span className='w-8 self-start pt-2.5 font-mono text-xs text-muted-foreground'>
