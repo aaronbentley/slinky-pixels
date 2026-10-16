@@ -78,9 +78,8 @@ export const Page = defineType({
             name: 'image',
             title: 'Image',
             type: 'image',
-            description: `Specify an image for ${documentType}`,
+            description: `Optional cover image shown below the ${documentType} title`,
             group: 'media',
-            validation: (Rule) => Rule.required(),
             options: {
                 hotspot: true
             }
