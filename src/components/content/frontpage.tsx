@@ -40,8 +40,6 @@ const Frontpage = ({
     headline,
     intro,
     buttons,
-    showRecentWork,
-    recentWorkCount,
     recentWork
 }: {
     id: string
@@ -62,24 +60,23 @@ const Frontpage = ({
               blank?: boolean
           }[]
         | null
-    showRecentWork?: boolean | null
-    recentWorkCount?: number | null
     recentWork?:
-        | {
+        | ({
               _id: string
               _type: string
-              title: string
-              slug: { current: string }
-          }[]
+              title: string | null
+              slug: { current?: string } | null
+          } | null)[]
         | null
 }) => {
     /**
-     * Limit recent work to the requested count
+     * Skip references to unpublished or deleted Work
      */
-    const recentWorkItems =
-        showRecentWork !== false && recentWork
-            ? recentWork.slice(0, recentWorkCount ?? 5)
+    const recentWorkItems = (recentWork ?? []).flatMap((work) =>
+        work?.slug?.current
+            ? [{ ...work, slug: { current: work.slug.current } }]
             : []
+    )
 
     return (
         <div

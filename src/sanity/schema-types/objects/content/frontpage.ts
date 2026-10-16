@@ -75,24 +75,24 @@ export const Frontpage = defineType({
                 Rule.max(3).error('You can add up to 3 buttons only')
         }),
         defineField({
-            name: 'showRecentWork',
-            title: 'Show Recent Work?',
-            type: 'boolean',
-            description: 'List the most recent Work, ordered by Work date',
-            initialValue: true
-        }),
-        defineField({
-            name: 'recentWorkCount',
-            title: 'Recent Work Count',
-            type: 'number',
-            description: 'Number of Work items to list',
-            initialValue: 5,
-            hidden: ({ parent }) => parent?.showRecentWork === false,
-            validation: (Rule) =>
-                Rule.integer()
-                    .min(1)
-                    .max(10)
-                    .error('Specify a Recent Work Count between 1 and 10')
+            name: 'recentWork',
+            title: 'Recent Work',
+            type: 'array',
+            of: [
+                defineArrayMember({
+                    type: 'reference',
+                    to: [{ type: 'work' }],
+                    options: {
+                        disableNew: true
+                    }
+                })
+            ],
+            description:
+                'Work listed beside the Headline, drag to reorder. Leave empty to hide',
+            validation: (Rule) => [
+                Rule.unique().error('No duplicate Work'),
+                Rule.max(10).error('You can add up to 10 Work items only')
+            ]
         })
     ],
     preview: {

@@ -50,20 +50,12 @@ const frontpage = `
             },
             blank
         },
-        showRecentWork,
-        recentWorkCount,
-        'recentWork': select(
-            showRecentWork != false => *[
-                _type == 'work' &&
-                defined(slug.current)
-            ] | order(coalesce(date, _createdAt) desc)[0...10] {
-                _id,
-                _type,
-                title,
-                ${slug}
-            },
-            []
-        )
+        recentWork[]-> {
+            _id,
+            _type,
+            title,
+            ${slug}
+        }
     }
 `
 
