@@ -8,7 +8,8 @@
  *     the motion never quite repeats
  *   - the loops bunch together & spread apart (squash & stretch)
  *   - each loop tilts to stay square to the coil (follows the spine)
- * Every pixel is placed each frame, so the animation pauses off-screen.
+ * The brand colours blend across the screen, so pixels shift hue as they
+ * move. Every pixel is placed each frame, so the animation pauses off-screen.
  *
  * Presets:
  *   - 'home' : full-width background behind the homepage
@@ -68,6 +69,52 @@ const TAU = Math.PI * 2
 const COLORS = ['--primary', '--secondary', '--tertiary']
 
 /**
+ * Steps in the precomputed gradient, plenty for a smooth blend
+ */
+const GRADIENT_STEPS = 256
+
+/**
+ * oklch(L C h) to [L, a, b] in OKLab, or null if it isn't oklch
+ */
+const toOklab = (color: string) => {
+    const match = color.match(/oklch\(\s*([\d.]+)(%?)\s+([\d.]+)\s+([\d.]+)/)
+    if (!match) return null
+
+    const lightness = parseFloat(match[1]) / (match[2] ? 100 : 1)
+    const chroma = parseFloat(match[3])
+    const hue = (parseFloat(match[4]) * Math.PI) / 180
+
+    return [lightness, chroma * Math.cos(hue), chroma * Math.sin(hue)]
+}
+
+/**
+ * The brand colours blended left to right in OKLab, so the midpoints stay
+ * vivid. Falls back to hard thirds if a colour isn't oklch
+ */
+const buildGradient = (colors: string[]) => {
+    const stops = colors.map(toOklab)
+    const span = colors.length - 1
+
+    return Array.from({ length: GRADIENT_STEPS }, (_, i) => {
+        const position = (i / (GRADIENT_STEPS - 1)) * span
+        const index = Math.min(span - 1, Math.floor(position))
+        const from = stops[index]
+        const to = stops[index + 1]
+
+        if (!from || !to) {
+            return colors[
+                Math.min(span, Math.floor((i / GRADIENT_STEPS) * colors.length))
+            ]
+        }
+
+        const mix = position - index
+        const [l, a, b] = from.map((value, c) => value + (to[c] - value) * mix)
+
+        return `oklab(${l.toFixed(4)} ${a.toFixed(4)} ${b.toFixed(4)})`
+    })
+}
+
+/**
  * Draw the coil at `time` (s) into a canvas of `width` x `height` CSS px
  */
 const drawCoil = ({
@@ -75,7 +122,7 @@ const drawCoil = ({
     preset,
     width,
     height,
-    colors,
+    gradient,
     intensity,
     time
 }: {
@@ -83,7 +130,7 @@ const drawCoil = ({
     preset: Preset
     width: number
     height: number
-    colors: string[]
+    gradient: string[]
     intensity: number
     time: number
 }) => {
@@ -147,16 +194,20 @@ const drawCoil = ({
                 lean * Math.atan2(after.y - before.y, after.x - before.x)
             const loopX = p.radiusX * Math.cos(t) * unit
             const loopY = p.radiusY * Math.sin(t) * unit
+            const x =
+                centre.x + loopX * Math.cos(angle) - loopY * Math.sin(angle)
+            const y =
+                centre.y + loopX * Math.sin(angle) + loopY * Math.cos(angle)
 
-            ctx.fillStyle = colors[Math.min(2, Math.floor(u * 3))]
+            /**
+             * Colour by position across the screen, so pixels shift hue as
+             * they squash, stretch & lean
+             */
+            const across = Math.min(1, Math.max(0, (x + size / 2) / width))
+
+            ctx.fillStyle = gradient[Math.round(across * (GRADIENT_STEPS - 1))]
             ctx.beginPath()
-            ctx.roundRect(
-                centre.x + loopX * Math.cos(angle) - loopY * Math.sin(angle),
-                centre.y + loopX * Math.sin(angle) + loopY * Math.cos(angle),
-                size,
-                size,
-                2 * unit
-            )
+            ctx.roundRect(x, y, size, size, 2 * unit)
             ctx.fill()
         }
     }
@@ -181,7 +232,7 @@ const Slinky = ({
 
         let width = 0
         let height = 0
-        let colors: string[] = []
+        let gradient: string[] = []
         let intensity = 0
         let frame = 0
 
@@ -190,7 +241,9 @@ const Slinky = ({
          */
         const readTheme = () => {
             const styles = getComputedStyle(canvas)
-            colors = COLORS.map((name) => styles.getPropertyValue(name).trim())
+            gradient = buildGradient(
+                COLORS.map((name) => styles.getPropertyValue(name).trim())
+            )
             intensity =
                 parseFloat(styles.getPropertyValue('--slinky-intensity')) || 0
         }
@@ -205,7 +258,7 @@ const Slinky = ({
         }
 
         const draw = (time: number) =>
-            drawCoil({ ctx, preset, width, height, colors, intensity, time })
+            drawCoil({ ctx, preset, width, height, gradient, intensity, time })
 
         /**
          * Animate only while on screen. With Reduced Motion, draw the coil
