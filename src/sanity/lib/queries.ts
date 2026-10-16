@@ -289,7 +289,12 @@ export const SETTINGS_QUERY = defineQuery(`
         title,
         description,
         url,
-        socialLinks
+        email,
+        socialLinks,
+        contactPage-> {
+            _type,
+            ${slug}
+        }
     }
 `)
 

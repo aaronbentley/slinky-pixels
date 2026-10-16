@@ -3,6 +3,7 @@
  */
 import Composer from '@/components/composer'
 import DetailsList from '@/components/details-list'
+import GetInTouch from '@/components/get-in-touch'
 import Link from '@/components/link'
 import PageCover from '@/components/page-cover'
 import PageHero from '@/components/page-hero'
@@ -196,28 +197,32 @@ const Work = async ({ params }: PageProps<'/work/[slug]'>) => {
                 }
                 className='w-full gap-y-24 pt-18'
             />
-            {next && (
-                <nav
-                    aria-label='More work'
-                    className='mx-auto w-full max-w-7xl px-8 pt-24 pb-8'>
-                    <RowLink
-                        href={resolveDocumentReferenceURL(
-                            next._type,
-                            next.slug
-                        )}
-                        arrowClassName='size-7 group-hover:translate-x-1.25 group-hover:-translate-y-1.25 group-focus-visible:translate-x-1.25 group-focus-visible:-translate-y-1.25'
-                        className='flex-wrap justify-between gap-x-6 gap-y-3 border-t border-b border-t-foreground py-7 hover:px-4 focus-visible:px-4'>
-                        <span className='flex flex-col gap-2'>
-                            <Typography variant='label'>
-                                Next project
-                            </Typography>
-                            <span className='text-[2.5rem]/[1.05] font-semibold tracking-tighter'>
-                                {next.title}
+            <div className='mx-auto flex w-full max-w-7xl flex-col px-8 pt-24 pb-8'>
+                {next && (
+                    <nav aria-label='More work'>
+                        <RowLink
+                            href={resolveDocumentReferenceURL(
+                                next._type,
+                                next.slug
+                            )}
+                            arrowClassName='size-7 group-hover:translate-x-1.25 group-hover:-translate-y-1.25 group-focus-visible:translate-x-1.25 group-focus-visible:-translate-y-1.25'
+                            className='flex-wrap justify-between gap-x-6 gap-y-3 border-t border-b border-t-foreground py-7 hover:px-4 focus-visible:px-4'>
+                            <span className='flex flex-col gap-2'>
+                                <Typography variant='label'>
+                                    Next project
+                                </Typography>
+                                <span className='text-[2.5rem]/[1.05] font-semibold tracking-tighter'>
+                                    {next.title}
+                                </span>
                             </span>
-                        </span>
-                    </RowLink>
-                </nav>
-            )}
+                        </RowLink>
+                    </nav>
+                )}
+                {/* Sits under Next project, or takes its top border when there's none */}
+                <GetInTouch
+                    className={cn(!next && 'border-t border-t-foreground')}
+                />
+            </div>
         </>
     )
 }

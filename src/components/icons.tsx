@@ -11,6 +11,8 @@ import {
     Layers,
     ListVideo,
     Menu,
+    MessageCircle,
+    Share2,
     SlidersHorizontal,
     Text
 } from 'lucide-react'
@@ -41,6 +43,10 @@ export const GradientIcon = Blend
 export const DetailsIcon = LayoutList
 
 export const ImagesIcon = Images
+
+export const GetInTouchIcon = MessageCircle
+
+export const ContactLinksIcon = Share2
 
 export const ExternalLinkIcon = ExternalLink
 

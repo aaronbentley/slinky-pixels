@@ -80,12 +80,25 @@ export type Content = Array<
     | ({
           _key: string
       } & Album)
+    | ({
+          _key: string
+      } & GetInTouch)
+    | ({
+          _key: string
+      } & ContactLinks)
 >
 
 export type Slug = {
     _type: 'slug'
     current: string
     source?: string
+}
+
+export type PageReference = {
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    [internalGroqTypeReferenceTo]?: 'page'
 }
 
 export type Settings = {
@@ -97,6 +110,8 @@ export type Settings = {
     title: string
     description: string
     url: string
+    email?: string
+    contactPage?: PageReference
     socialLinks?: Array<{
         name:
             | 'X'
@@ -110,6 +125,7 @@ export type Settings = {
             | 'Apple Music'
             | 'Xbox'
         url: string
+        professional?: boolean
         _type: 'socialLink'
         _key: string
     }>
@@ -129,13 +145,6 @@ export type Menu = {
     >
 }
 
-export type PageReference = {
-    _ref: string
-    _type: 'reference'
-    _weak?: boolean
-    [internalGroqTypeReferenceTo]?: 'page'
-}
-
 export type PostReference = {
     _ref: string
     _type: 'reference'
@@ -150,6 +159,12 @@ export type Link = {
     destinationRef?: PageReference | PostReference
     destinationHref?: string
     blank?: boolean
+}
+
+export type GetInTouch = {
+    _type: 'getInTouch'
+    title: string
+    text?: string
 }
 
 export type WorkReference = {
@@ -200,6 +215,11 @@ export type Details = {
         _type: 'detailsItem'
         _key: string
     }>
+}
+
+export type ContactLinks = {
+    _type: 'contactLinks'
+    title: string
 }
 
 export type CollectionGrid = {
@@ -456,14 +476,16 @@ export type AllSanitySchemaTypes =
     | SanityImageHotspot
     | Content
     | Slug
+    | PageReference
     | Settings
     | Menu
-    | PageReference
     | PostReference
     | Link
+    | GetInTouch
     | WorkReference
     | Frontpage
     | Details
+    | ContactLinks
     | CollectionGrid
     | Category
     | BodyPortableText
@@ -735,6 +757,11 @@ export type PAGE_QUERY_RESULT = {
           }
         | {
               _key: string
+              _type: 'contactLinks'
+              title: string
+          }
+        | {
+              _key: string
               _type: 'frontpage'
               title: string
               eyebrow: string | null
@@ -784,6 +811,12 @@ export type PAGE_QUERY_RESULT = {
                       current: string
                   } | null
               }> | null
+          }
+        | {
+              _key: string
+              _type: 'getInTouch'
+              title: string
+              text?: string
           }
     >
     image: {
@@ -1070,6 +1103,11 @@ export type POST_QUERY_RESULT = {
           }
         | {
               _key: string
+              _type: 'contactLinks'
+              title: string
+          }
+        | {
+              _key: string
               _type: 'frontpage'
               title: string
               eyebrow: string | null
@@ -1119,6 +1157,12 @@ export type POST_QUERY_RESULT = {
                       current: string
                   } | null
               }> | null
+          }
+        | {
+              _key: string
+              _type: 'getInTouch'
+              title: string
+              text?: string
           }
     >
     image: {
@@ -1403,6 +1447,11 @@ export type WORK_QUERY_RESULT = {
           }
         | {
               _key: string
+              _type: 'contactLinks'
+              title: string
+          }
+        | {
+              _key: string
               _type: 'frontpage'
               title: string
               eyebrow: string | null
@@ -1452,6 +1501,12 @@ export type WORK_QUERY_RESULT = {
                       current: string
                   } | null
               }> | null
+          }
+        | {
+              _key: string
+              _type: 'getInTouch'
+              title: string
+              text?: string
           }
     >
     image: {
@@ -1581,11 +1636,12 @@ export type MENU_QUERY_RESULT = {
 
 // Source: src/sanity/lib/queries.ts
 // Variable: SETTINGS_QUERY
-// Query: *[_type == 'settings'][0] {        title,        description,        url,        socialLinks    }
+// Query: *[_type == 'settings'][0] {        title,        description,        url,        email,        socialLinks,        contactPage-> {            _type,                slug {        current    }        }    }
 export type SETTINGS_QUERY_RESULT = {
     title: string
     description: string
     url: string
+    email: string | null
     socialLinks: Array<{
         name:
             | 'Apple Music'
@@ -1599,9 +1655,16 @@ export type SETTINGS_QUERY_RESULT = {
             | 'Xbox'
             | 'Youtube'
         url: string
+        professional?: boolean
         _type: 'socialLink'
         _key: string
     }> | null
+    contactPage: {
+        _type: 'page'
+        slug: {
+            current: string
+        }
+    } | null
 } | null
 
 // Source: src/sanity/lib/queries.ts
@@ -1630,7 +1693,7 @@ declare global {
         "\n    *[\n        _type == 'work' &&\n        defined(slug.current)\n    ] {\n        \n    slug {\n        current\n    }\n\n    }\n": WORK_PATHS_QUERY_RESULT
         "\n    *[\n        _type == 'work' &&\n        defined(slug.current) &&\n        slug.current == $slug\n    ][0] {\n        _id,\n        _type,\n        title,\n        subtitle,\n        url,\n        uses,\n        \n    content[] {\n        ...,\n        _key,\n        _type,\n        'title': coalesce(title, 'Content Title'),\n        \n    _type == 'frontpage' => {\n        title,\n        eyebrow,\n        headline,\n        intro,\n        buttons[] {\n            _key,\n            label,\n            customUrl,\n            destinationHref,\n            destinationRef-> {\n                _type,\n                title,\n                \n    slug {\n        current\n    }\n\n            },\n            blank\n        },\n        recentWork[]-> {\n            _id,\n            _type,\n            title,\n            \n    slug {\n        current\n    }\n\n        }\n    }\n,\n        \n    _type == 'body' => {\n        content[] {\n            ...,\n            markDefs[] {\n                ...,\n                (_type == 'link' && customUrl != true) => {  \n                    destinationRef-> {\n                        _type,\n                        title,\n                        \n    slug {\n        current\n    }\n\n                    }\n                }\n            },\n        }\n    }\n,\n        \n    _type == 'collectionGrid' => {\n        contentType,\n        limit,\n        \"content\": select(\n            defined(customContent) && contentType == 'custom' => customContent[]-> {\n                _id,\n                _type,\n                title,\n                subtitle,\n                excerpt,\n                uses,\n                \n    slug {\n        current\n    }\n,\n                \n    image {\n        ...,\n        asset-> {\n            ...,\n            metadata\n        }\n    }\n\n            },\n            defined(contentType) && contentType != 'custom'  => *[_type == ^.contentType] {\n                _id,\n                _type,\n                title,\n                subtitle,\n                excerpt,\n                uses,\n                \n    slug {\n        current\n    }\n,\n                \n    image {\n        ...,\n        asset-> {\n            ...,\n            metadata\n        }\n    }\n\n            }|order(title asc),\n            []\n        )\n    }\n,\n        \n    _type == 'album' => {\n        title,\n        images[] {\n            ...,\n            _type,\n            asset->,\n            crop,\n            hotspot\n        }\n    }\n\n    }\n,\n        \n    image {\n        ...,\n        asset-> {\n            ...,\n            metadata\n        }\n    }\n,\n        \n    seo {\n        seoTitle,\n        seoDescription\n    }\n,\n        'collection': *[\n            _type == 'page' &&\n            slug.current == 'work'\n        ][0].content[_type == 'collectionGrid'][0].customContent[]-> {\n            _id,\n            _type,\n            title,\n            \n    slug {\n        current\n    }\n\n        }\n    }\n": WORK_QUERY_RESULT
         "\n    *[\n        _type == 'menu' && \n        title == $title\n    ][0] {\n        ...,\n        links[] {\n            _key,\n            label,\n            customUrl,\n            destinationHref,\n            destinationRef->,\n            blank\n        }\n    }   \n": MENU_QUERY_RESULT
-        "\n    *[_type == 'settings'][0] {\n        title,\n        description,\n        url,\n        socialLinks\n    }\n": SETTINGS_QUERY_RESULT
+        "\n    *[_type == 'settings'][0] {\n        title,\n        description,\n        url,\n        email,\n        socialLinks,\n        contactPage-> {\n            _type,\n            \n    slug {\n        current\n    }\n\n        }\n    }\n": SETTINGS_QUERY_RESULT
         '\n    *[\n        _type == "page" && defined(slug.current) ||\n        _type == "work" && defined(slug.current)\n    ] | order(slug.current desc) | order(_createdAt asc){\n        _type,\n        _updatedAt,\n        slug\n    }\n': SITEMAP_QUERY_RESULT
     }
 }

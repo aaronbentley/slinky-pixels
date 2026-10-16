@@ -84,6 +84,24 @@ export const Settings = defineType({
             group: 'content'
         }),
         defineField({
+            name: 'email',
+            title: 'Email',
+            type: 'email',
+            description: 'Listed first on the Contact Page',
+            group: 'contact'
+        }),
+        defineField({
+            name: 'contactPage',
+            title: 'Contact Page',
+            type: 'reference',
+            to: [{ type: 'page' }],
+            description: 'Where the Get In Touch rows link to',
+            options: {
+                disableNew: true
+            },
+            group: 'contact'
+        }),
+        defineField({
             name: 'socialLinks',
             title: 'Social Links',
             type: 'array',
@@ -124,14 +142,23 @@ export const Settings = defineType({
                             title: 'URL',
                             validation: (Rule) =>
                                 Rule.required().error('Specify Social Link URL')
+                        }),
+                        defineField({
+                            name: 'professional',
+                            type: 'boolean',
+                            title: 'Professional?',
+                            description:
+                                'Listed first in the footer & on the Contact Page',
+                            initialValue: false
                         })
                     ],
                     preview: {
                         select: {
                             title: 'name',
-                            subtitle: 'url'
+                            subtitle: 'url',
+                            professional: 'professional'
                         },
-                        prepare({ title, subtitle }) {
+                        prepare({ title, subtitle, professional }) {
                             if (!title) {
                                 return {
                                     title: 'No Title'
@@ -142,7 +169,9 @@ export const Settings = defineType({
                             const Icon = socialIconsMap[title]
 
                             return {
-                                title: title ?? 'No title',
+                                title: professional
+                                    ? `${title} (Professional)`
+                                    : (title ?? 'No title'),
                                 subtitle: subtitle ?? 'No URL',
                                 media: Icon ?? null
                             }

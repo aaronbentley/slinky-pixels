@@ -4,7 +4,9 @@
 import Album from '@/components/content/album'
 import Body from '@/components/content/body'
 import CollectionGrid from '@/components/content/collection-grid'
+import ContactLinks from '@/components/content/contact-links'
 import Frontpage from '@/components/content/frontpage'
+import GetInTouch from '@/components/content/get-in-touch'
 import { cn } from '@/lib/utils'
 import { client } from '@/sanity/lib/client'
 import {
@@ -21,7 +23,9 @@ const contentComponents = {
     frontpage: Frontpage,
     body: Body,
     collectionGrid: CollectionGrid,
-    album: Album
+    album: Album,
+    getInTouch: GetInTouch,
+    contactLinks: ContactLinks
 }
 
 /**

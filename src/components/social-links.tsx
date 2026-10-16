@@ -35,11 +35,13 @@ const socialIcons: Record<string, React.FC<{ className?: string }>> = {
 
 const SocialLinks = ({
     socialLinks,
-    className
+    className,
+    iconClassName
 }: {
     socialLinks:
         { _key: string; name?: string | null; url?: string | null }[] | null
     className?: string
+    iconClassName?: string
 }) => {
     return (
         <div
@@ -66,7 +68,12 @@ const SocialLinks = ({
                             rel='noopener noreferrer'
                             target='_blank'
                             className='group'>
-                            <Icon className='size-4 origin-bottom text-muted-foreground transition-transform duration-200 group-hover:scale-150 group-hover:stroke-[url(#icon-gradient)] group-focus-visible:scale-150 group-focus-visible:stroke-[url(#icon-gradient)]' />
+                            <Icon
+                                className={cn(
+                                    'size-4 origin-bottom text-muted-foreground transition-transform duration-200 group-hover:scale-150 group-hover:stroke-[url(#icon-gradient)] group-focus-visible:scale-150 group-focus-visible:stroke-[url(#icon-gradient)]',
+                                    iconClassName
+                                )}
+                            />
                         </Link>
                     )
                 })}

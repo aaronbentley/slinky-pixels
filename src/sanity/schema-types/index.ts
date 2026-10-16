@@ -9,8 +9,10 @@ import { BodyPortableText } from '@/sanity/schema-types/objects/body-portable-te
 import { Album } from '@/sanity/schema-types/objects/content/album'
 import { Body } from '@/sanity/schema-types/objects/content/body'
 import { CollectionGrid } from '@/sanity/schema-types/objects/content/collection-grid'
+import { ContactLinks } from '@/sanity/schema-types/objects/content/contact-links'
 import { Content } from '@/sanity/schema-types/objects/content/content'
 import { Frontpage } from '@/sanity/schema-types/objects/content/frontpage'
+import { GetInTouch } from '@/sanity/schema-types/objects/content/get-in-touch'
 import { Details } from '@/sanity/schema-types/objects/details'
 import { Link } from '@/sanity/schema-types/objects/link'
 import { Seo } from '@/sanity/schema-types/objects/seo'
@@ -24,9 +26,11 @@ export const schema: { types: SchemaTypeDefinition[] } = {
         BodyPortableText,
         Category,
         CollectionGrid,
+        ContactLinks,
         Content,
         Details,
         Frontpage,
+        GetInTouch,
         Link,
         Menu,
         Page,
