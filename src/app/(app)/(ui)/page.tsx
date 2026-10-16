@@ -21,7 +21,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
         frontPage?.seo?.seoDescription ?? process.env.APP_DESCRIPTION!
 
     return buildMetadata({
-        title: `${title} - ${description}`,
+        title,
         description,
         path: '/',
         absoluteTitle: true
