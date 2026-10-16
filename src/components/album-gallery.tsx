@@ -18,7 +18,9 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useState } from 'react'
 
-const AlbumGallery = ({ images }: { images: ImageProps['image'][] }) => {
+export type AlbumImage = ImageProps['image'] & { caption?: string | null }
+
+const AlbumGallery = ({ images }: { images: AlbumImage[] }) => {
     /**
      * Open state, the shown image & the direction of the last move, which
      * sets the side the next image slides in from. The index outlives `open`
@@ -65,12 +67,12 @@ const AlbumGallery = ({ images }: { images: ImageProps['image'][] }) => {
                                 View {item.alt || 'image'} full size
                             </span>
                         </button>
-                        {item.alt && (
+                        {(item.caption || item.alt) && (
                             <figcaption className='flex gap-2.5 text-[13px] text-muted-foreground'>
                                 <span className='font-mono'>
                                     {padNumber(itemIndex + 1)}
                                 </span>
-                                {item.alt}
+                                {item.caption || item.alt}
                             </figcaption>
                         )}
                     </figure>
@@ -96,7 +98,7 @@ const AlbumGallery = ({ images }: { images: ImageProps['image'][] }) => {
                         <>
                             <DialogHeader className='pe-8'>
                                 <DialogTitle>
-                                    {image.alt || 'Image'}
+                                    {image.caption || image.alt || 'Image'}
                                 </DialogTitle>
                                 <DialogDescription
                                     aria-live='polite'

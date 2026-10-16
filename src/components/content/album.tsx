@@ -3,8 +3,7 @@
  * A titled, numbered gallery, e.g. a work item's screenshots. Images open
  * full size in a lightbox, paged with the arrow keys or buttons.
  */
-import AlbumGallery from '@/components/album-gallery'
-import { ImageProps } from '@/components/image'
+import AlbumGallery, { type AlbumImage } from '@/components/album-gallery'
 import { padNumber } from '@/lib/helpers'
 import { cn } from '@/lib/utils'
 
@@ -17,7 +16,7 @@ const Album = ({
     id: string
     order: number
     title?: string
-    images?: ImageProps['image'][] | undefined
+    images?: AlbumImage[] | undefined
 }) => {
     /**
      * Only images with an asset can be shown

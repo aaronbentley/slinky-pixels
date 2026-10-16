@@ -39,6 +39,14 @@ export const Album = defineType({
                             type: 'string',
                             title: 'Alt Text',
                             description: 'Image alt text'
+                        },
+                        {
+                            name: 'caption',
+                            type: 'text',
+                            title: 'Caption',
+                            rows: 2,
+                            description:
+                                'Optional, what the image shows & why it matters. Falls back to the Alt Text'
                         }
                     ]
                 })

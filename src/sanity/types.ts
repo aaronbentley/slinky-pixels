@@ -326,7 +326,7 @@ export type Page = {
     subtitle: string
     slug: Slug
     content: Content
-    image: {
+    image?: {
         asset?: SanityImageAssetReference
         media?: unknown
         hotspot?: SanityImageHotspot
@@ -345,6 +345,7 @@ export type Album = {
         hotspot?: SanityImageHotspot
         crop?: SanityImageCrop
         alt?: string
+        caption?: string
         _type: 'image'
         _key: string
     }>
@@ -533,6 +534,7 @@ export type PAGE_QUERY_RESULT = {
                   hotspot: SanityImageHotspot | null
                   crop: SanityImageCrop | null
                   alt?: string
+                  caption?: string
                   _type: 'image'
                   _key: string
               }>
@@ -648,7 +650,7 @@ export type PAGE_QUERY_RESULT = {
                                   hotspot?: SanityImageHotspot
                                   crop?: SanityImageCrop
                                   _type: 'image'
-                              }
+                              } | null
                           }
                         | {
                               _id: string
@@ -811,7 +813,7 @@ export type PAGE_QUERY_RESULT = {
         hotspot?: SanityImageHotspot
         crop?: SanityImageCrop
         _type: 'image'
-    }
+    } | null
     seo: {
         seoTitle: string
         seoDescription: string
@@ -867,6 +869,7 @@ export type POST_QUERY_RESULT = {
                   hotspot: SanityImageHotspot | null
                   crop: SanityImageCrop | null
                   alt?: string
+                  caption?: string
                   _type: 'image'
                   _key: string
               }>
@@ -982,7 +985,7 @@ export type POST_QUERY_RESULT = {
                                   hotspot?: SanityImageHotspot
                                   crop?: SanityImageCrop
                                   _type: 'image'
-                              }
+                              } | null
                           }
                         | {
                               _id: string
@@ -1199,6 +1202,7 @@ export type WORK_QUERY_RESULT = {
                   hotspot: SanityImageHotspot | null
                   crop: SanityImageCrop | null
                   alt?: string
+                  caption?: string
                   _type: 'image'
                   _key: string
               }>
@@ -1314,7 +1318,7 @@ export type WORK_QUERY_RESULT = {
                                   hotspot?: SanityImageHotspot
                                   crop?: SanityImageCrop
                                   _type: 'image'
-                              }
+                              } | null
                           }
                         | {
                               _id: string
@@ -1536,7 +1540,7 @@ export type MENU_QUERY_RESULT = {
                   subtitle: string
                   slug: Slug
                   content: Content
-                  image: {
+                  image?: {
                       asset?: SanityImageAssetReference
                       media?: unknown
                       hotspot?: SanityImageHotspot
