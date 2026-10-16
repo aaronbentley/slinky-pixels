@@ -5,6 +5,7 @@
  */
 import { apiVersion, dataset, projectId, projectName } from '@/sanity/env'
 import { locations } from '@/sanity/lib/locations'
+import Logo from '@/sanity/logo'
 import { structure } from '@/sanity/lib/structure'
 import { schema } from '@/sanity/schema-types'
 import { visionTool } from '@sanity/vision'
@@ -15,6 +16,7 @@ import { structureTool } from 'sanity/structure'
 export default defineConfig({
     basePath: '/studio',
     title: projectName,
+    icon: Logo,
     projectId,
     dataset,
     schema,
