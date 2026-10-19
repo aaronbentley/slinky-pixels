@@ -245,6 +245,14 @@ export const WORK_QUERY = defineQuery(`
         title,
         subtitle,
         url,
+        projectType,
+        role,
+        period,
+        credits[] {
+            _key,
+            role,
+            name
+        },
         uses,
         ${content},
         ${imageAssetReference},

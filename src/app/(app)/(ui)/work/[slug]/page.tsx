@@ -113,6 +113,20 @@ const Work = async ({ params }: PageProps<'/work/[slug]'>) => {
         <DetailsList
             title='Project'
             items={[
+                ...(work.projectType
+                    ? [{ _key: 'type', label: 'Type', text: work.projectType }]
+                    : []),
+                ...(work.role
+                    ? [{ _key: 'role', label: 'My role', text: work.role }]
+                    : []),
+                ...(work.period
+                    ? [{ _key: 'period', label: 'When', text: work.period }]
+                    : []),
+                ...(work.credits ?? []).map((credit) => ({
+                    _key: credit._key,
+                    label: credit.role,
+                    text: credit.name
+                })),
                 ...(work.url
                     ? [
                           {
