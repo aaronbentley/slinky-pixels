@@ -122,8 +122,9 @@ const typographyVariants = cva([], {
                 'italic',
                 'max-w-prose'
             ],
-            ul: ['list-disc', 'list-inside', 'ps-4', 'space-y-2', 'my-2'],
-            ol: ['list-decimal', 'list-inside', 'ps-4', 'space-y-2', 'my-2'],
+            // Markers outside the text, so wrapped lines hang under the text
+            ul: ['list-disc', 'list-outside', 'ps-5', 'space-y-2', 'my-2'],
+            ol: ['list-decimal', 'list-outside', 'ps-6', 'space-y-2', 'my-2'],
             li: [...proseBaseClasses],
             small: ['text-sm'],
             /**

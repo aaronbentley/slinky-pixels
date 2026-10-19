@@ -90,7 +90,16 @@ const prose = ({
                         className={size}>
                         {children}
                     </Typography>
-                )
+                ),
+            // Section headings in unsectioned prose, e.g. a work item's
+            // Overview / My role / Key decision, set apart by a rule
+            h2: ({ children }) => (
+                <Typography
+                    variant='h2'
+                    className='mt-8 border-t border-foreground pt-5 text-[1.75rem]/[1.15] tracking-tighter'>
+                    {children}
+                </Typography>
+            )
         }
     })
 
