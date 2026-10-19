@@ -1,10 +1,9 @@
 /**
  * SlinkyPixels : Page Hero
  * Shared sub-page heading: an eyebrow (or breadcrumb), the gradient title,
- * the subtitle & optional actions, with the compact slinky behind it.
+ * the subtitle & optional actions.
  */
 import GradientShift from '@/components/gradient-shift'
-import Slinky from '@/components/slinky'
 import { headingBaseClasses, Typography } from '@/components/typography'
 import { fadeUp, rise, stagger } from '@/lib/motion'
 import { cn } from '@/lib/utils'
@@ -26,8 +25,7 @@ const PageHero = ({
      */
     bordered?: boolean
 }) => (
-    <section className={cn('relative isolate w-full', bordered && 'border-b')}>
-        <Slinky preset='hero' />
+    <section className={cn('w-full', bordered && 'border-b')}>
         <motion.div
             initial='hidden'
             animate='show'

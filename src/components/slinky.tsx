@@ -13,7 +13,6 @@
  *
  * Presets:
  *   - 'home' : full-width background behind the homepage
- *   - 'hero' : shorter, full-width coil behind sub-page heroes
  *
  * Sizes are in units at the 1440px design width. A unit scales with the
  * viewport (1px at 1440px, up to 2px) so the coil keeps its shape on wide
@@ -37,18 +36,6 @@ const PRESETS = {
         wave: 22, // units - bob distance either side of rest
         wavesAlong: 1.5, // waves visible along the coil at once
         top: 0.64 // where the ends of the coil sit, down the container
-    },
-    hero: {
-        rings: 40,
-        perRing: 14,
-        radiusX: 18,
-        radiusY: 56,
-        arch: 150,
-        frontSize: 8,
-        backSize: 5,
-        wave: 16,
-        wavesAlong: 2.5,
-        top: 0.66
     }
 } as const
 
@@ -216,7 +203,7 @@ const drawCoil = ({
 }
 
 const Slinky = ({
-    preset = 'hero',
+    preset = 'home',
     className
 }: {
     preset?: Preset
