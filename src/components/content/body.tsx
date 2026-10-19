@@ -10,7 +10,7 @@ import DetailsList, { DetailsListItem } from '@/components/details-list'
 import Marker from '@/components/marker'
 import RowLink from '@/components/row-link'
 import serializer from '@/components/serializer'
-import { Typography } from '@/components/typography'
+import { headingBaseClasses, Typography } from '@/components/typography'
 import { padNumber, slugify } from '@/lib/helpers'
 import { fadeUp, stagger } from '@/lib/motion'
 import { cn } from '@/lib/utils'
@@ -93,12 +93,16 @@ const prose = ({
                 ),
             // Section headings in unsectioned prose, e.g. a work item's
             // Overview / My role / Key decision, set apart by a rule
+            // A plain h2, so Typography's breakpoint sizes don't take over
             h2: ({ children }) => (
-                <Typography
-                    variant='h2'
-                    className='mt-8 border-t border-foreground pt-5 text-[1.75rem]/[1.15] tracking-tighter'>
+                <h2
+                    className={cn(
+                        headingBaseClasses,
+                        'mt-8 border-t border-foreground pt-5 font-semibold',
+                        'text-[1.75rem]/[1.15] md:text-[2rem]/[1.1]'
+                    )}>
                     {children}
-                </Typography>
+                </h2>
             )
         }
     })
