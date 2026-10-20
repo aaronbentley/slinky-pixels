@@ -123,7 +123,7 @@ const Frontpage = ({
                     </motion.h1>
                 )}
                 {intro && (
-                    <motion.div variants={fadeUp}>
+                    <motion.div variants={rise}>
                         <Typography
                             variant='p'
                             weight='light'

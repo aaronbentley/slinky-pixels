@@ -59,7 +59,7 @@ const PageHero = ({
                 </GradientShift>
             </motion.h1>
             {subtitle && (
-                <motion.div variants={fadeUp}>
+                <motion.div variants={rise}>
                     <Typography
                         variant='p'
                         weight='light'

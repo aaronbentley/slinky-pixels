@@ -19,8 +19,9 @@ export const fadeUp = {
 }
 
 /**
- * For LCP elements (page titles): rises without fading in. Content that
- * starts at opacity 0 doesn't count as painted until it is revealed
+ * For LCP candidates (page titles & intros): rises without fading in. Content
+ * that starts at opacity 0 doesn't count as painted until it is revealed, &
+ * on narrow screens an intro paragraph can outsize the title
  */
 export const rise = {
     hidden: { y: 12 },
