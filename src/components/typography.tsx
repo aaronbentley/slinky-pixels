@@ -9,7 +9,7 @@ import * as React from 'react'
 
 /**
  * Line heights are set with the `text-{size}/{leading}` shorthand so they travel
- * with the font size and can't be dropped by tailwind-merge (a standalone
+ * with the font size and can't be dropped by `cn()` (a standalone
  * `leading-*` is removed whenever a later `text-{size}` class is merged in).
  * Convention: sizes up to `xl` use Tailwind's default ratios, `2xl`–`4xl` use
  * `/tight` and `5xl` and above use `/none`.
