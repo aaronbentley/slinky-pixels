@@ -22,14 +22,9 @@ import { useState } from 'react'
  */
 
 const Nav = ({
-    menu,
-    children
+    menu
 }: {
     menu: MENU_QUERY_RESULT | StegaBranded<MENU_QUERY_RESULT>
-    /**
-     * Header actions, rendered between the inline links & the mobile menu button
-     */
-    children?: React.ReactNode
 }) => {
     /**
      * Get the pathname
@@ -54,7 +49,7 @@ const Nav = ({
     /**
      * Bail if no menu links
      */
-    if (links.length === 0) return children
+    if (links.length === 0) return null
 
     return (
         <>
@@ -77,7 +72,6 @@ const Nav = ({
                     </Link>
                 ))}
             </nav>
-            {children}
             <Sheet
                 open={open}
                 onOpenChange={setOpen}>

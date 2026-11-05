@@ -2,7 +2,6 @@
  * SlinkyPixels : Header
  */
 import ColorStrip from '@/components/color-strip'
-import ModeToggle from '@/components/mode-toggle'
 import Nav from '@/components/nav'
 import {
     gradientTextClasses,
@@ -50,9 +49,7 @@ const Header = async () => {
                     {process.env.APP_TITLE!}
                 </Link>
                 <div className='flex items-center gap-1'>
-                    <Nav menu={menu}>
-                        <ModeToggle />
-                    </Nav>
+                    <Nav menu={menu} />
                 </div>
             </div>
         </header>
