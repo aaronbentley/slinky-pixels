@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(yarn dlx *)",
+      "Bash(git rm *)",
+      "Bash(yarn lint *)",
+      "Bash(lsof -iTCP -sTCP:LISTEN -P)",
+      "Bash(yarn dev *)",
+      "Bash(curl -sk -o /dev/null -w '%{http_code}' https://localhost:3000)",
+      "Bash(break)",
+      "Bash(lsof -iTCP:3000 -sTCP:LISTEN -P)",
+      "Bash(yarn --version)",
+      "Bash(git log *)",
+      "Bash(yarn npm *)",
+      "Bash(yarn outdated *)",
+      "Bash(node -e ' *)",
+      "Bash(gh release *)",
+      "Bash(npm view *)",
+      "Bash(yarn up *)",
+      "Bash(node -e \"let d='';process.stdin.on\\('data',c=>d+=c\\).on\\('end',\\(\\)=>{const t=JSON.parse\\(d\\);Object.entries\\(t\\).filter\\(\\([k]\\)=>/^16\\\\.4\\\\.\\\\d+$/.test\\(k\\)\\).forEach\\(e=>console.log\\(e\\)\\)}\\)\")",
+      "Bash(yarn typecheck *)",
+      "mcp__claude_ai_Sanity__get_document",
+      "Bash(cd ~/Apps && ls -d *replay* *relay* *xbox* *onedrive* 2>/dev/null; grep -rliE \"onedrive|xbox\" --include=package.json --include=vercel.json --include=README.md -l . 2>/dev/null | grep -v node_modules | head)",
+      "Read(//Users/aaron/Apps/**)"
+    ]
+  }
+}
